@@ -35,8 +35,36 @@ export async function processDispatchQueue(
 ): Promise<void> {
   const prisma = getPrismaClient();
 
+  // Scope dispatch processing to the current cycle by resolving normalization
+  // items that belong to this cycle's transformations/initiations.
+  const normalizationItemsForCycle = await prisma.normalizationItem.findMany({
+    where: {
+      transformation: {
+        initiation: {
+          cycleRunId,
+        },
+      },
+    },
+    select: { id: true },
+  });
+
+  const normalizationItemIds = normalizationItemsForCycle.map((ni) => ni.id);
+
+  if (normalizationItemIds.length === 0) {
+    await recorder.warn(
+      "dispatch",
+      "No normalization items found for cycle; skipping dispatch processing",
+      undefined,
+      cycleRunId
+    );
+    return;
+  }
+
   const pendingJobs = await prisma.dispatchJob.findMany({
-    where: { status: "pending" },
+    where: {
+      status: "pending",
+      normalizationItemId: { in: normalizationItemIds },
+    },
     orderBy: { createdAt: "asc" },
   });
 

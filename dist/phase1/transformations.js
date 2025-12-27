@@ -30,7 +30,7 @@ async function runTier(cycleRunId, initiationId, tier, input) {
                 data: { status: "success" },
             });
             await recorder_1.recorder.info("transformation", `Tier-${tier} transformation succeeded`, transformation.id, cycleRunId);
-            return output;
+            return { payload: output, transformationId: transformation.id };
         }
         catch (error) {
             await prisma.transformation.update({
@@ -51,8 +51,25 @@ async function runTier(cycleRunId, initiationId, tier, input) {
 }
 async function runTieredTransformations(cycleRunId, initiationId) {
     const seedPayload = Buffer.from(`init:${initiationId}`, "utf8");
-    const tier1Payload = await runTier(cycleRunId, initiationId, 1, seedPayload);
-    const tier2Payload = await runTier(cycleRunId, initiationId, 2, tier1Payload);
-    const tier3Payload = await runTier(cycleRunId, initiationId, 3, tier2Payload);
-    return { tier1Payload, tier2Payload, tier3Payload };
+    const tiers = [];
+    for (const tier of [1, 2, 3]) {
+        try {
+            const { payload, transformationId } = await runTier(cycleRunId, initiationId, tier, seedPayload);
+            tiers.push({
+                tier,
+                success: true,
+                transformationId,
+                payload,
+            });
+        }
+        catch (_error) {
+            // Failure of one tier must not block other tiers; record failure via
+            // the inner runTier logic and continue.
+            tiers.push({
+                tier,
+                success: false,
+            });
+        }
+    }
+    return { tiers };
 }

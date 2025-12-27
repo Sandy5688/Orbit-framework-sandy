@@ -2,10 +2,15 @@ import { getPrismaClient } from "../db/client";
 import { withRetry } from "../shared/retry";
 import { recorder } from "./recorder";
 
+export interface TierTransformationResult {
+  tier: 1 | 2 | 3;
+  success: boolean;
+  transformationId?: string;
+  payload?: Buffer;
+}
+
 export interface TransformationResult {
-  tier1Payload: Buffer;
-  tier2Payload: Buffer;
-  tier3Payload: Buffer;
+  tiers: TierTransformationResult[];
 }
 
 async function runTier(
@@ -13,7 +18,7 @@ async function runTier(
   initiationId: string,
   tier: 1 | 2 | 3,
   input: Buffer
-): Promise<Buffer> {
+): Promise<{ payload: Buffer; transformationId: string }> {
   const prisma = getPrismaClient();
 
   let attempt = 0;
@@ -52,7 +57,7 @@ async function runTier(
         cycleRunId
       );
 
-      return output;
+      return { payload: output, transformationId: transformation.id };
     } catch (error) {
       await prisma.transformation.update({
         where: { id: transformation.id },
@@ -85,11 +90,33 @@ export async function runTieredTransformations(
 ): Promise<TransformationResult> {
   const seedPayload = Buffer.from(`init:${initiationId}`, "utf8");
 
-  const tier1Payload = await runTier(cycleRunId, initiationId, 1, seedPayload);
-  const tier2Payload = await runTier(cycleRunId, initiationId, 2, tier1Payload);
-  const tier3Payload = await runTier(cycleRunId, initiationId, 3, tier2Payload);
+  const tiers: TierTransformationResult[] = [];
 
-  return { tier1Payload, tier2Payload, tier3Payload };
+  for (const tier of [1, 2, 3] as const) {
+    try {
+      const { payload, transformationId } = await runTier(
+        cycleRunId,
+        initiationId,
+        tier,
+        seedPayload
+      );
+      tiers.push({
+        tier,
+        success: true,
+        transformationId,
+        payload,
+      });
+    } catch (_error) {
+      // Failure of one tier must not block other tiers; record failure via
+      // the inner runTier logic and continue.
+      tiers.push({
+        tier,
+        success: false,
+      });
+    }
+  }
+
+  return { tiers };
 }
 
 

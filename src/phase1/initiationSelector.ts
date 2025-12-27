@@ -14,28 +14,57 @@ export async function generateInitiation(
 ): Promise<InitiationObject> {
   const prisma = getPrismaClient();
 
-  const label = `auto-initiation-${new Date().toISOString()}`;
-  const weight = 1.0;
-  const metadata: Record<string, unknown> = {};
+  // Derive a stable deduplication source from execution context only.
+  const cycle = await prisma.cycleRun.findUnique({
+    where: { id: cycleRunId },
+  });
 
-  const hash = crypto
-    .createHash("sha256")
-    .update(label + JSON.stringify(metadata))
-    .digest("hex");
+  const context = (cycle?.contextJson ?? {}) as {
+    profileId?: string | null;
+    runProfileId?: string | null;
+    instructionId?: string | null;
+    namespace?: string | null;
+  };
+
+  const stableContext = {
+    profileId: context.profileId ?? null,
+    runProfileId: context.runProfileId ?? null,
+    instructionId: context.instructionId ?? null,
+    namespace: context.namespace ?? null,
+  };
+
+  const dedupeSource = JSON.stringify(stableContext);
+
+  const hash = crypto.createHash("sha256").update(dedupeSource).digest("hex");
 
   const existing = await prisma.initiation.findFirst({
     where: { dedupeHash: hash },
   });
 
   if (existing) {
+    // Reuse existing initiation for identical stable context; do not create a
+    // duplicate initiation record.
     await recorder.info(
       "initiation",
-      "Duplicate initiation hash detected",
+      "Reusing existing initiation for stable context",
       existing.id,
       cycleRunId,
       { dedupeHash: hash }
     );
+
+    return {
+      id: existing.id,
+      label: existing.label,
+      weight: existing.weight,
+      metadata: existing.metadata as Record<string, unknown>,
+    };
   }
+
+  const label = `auto-initiation-${hash.slice(0, 8)}`;
+  const weight = 1.0;
+  const metadata: Record<string, unknown> = {
+    ...stableContext,
+  };
 
   const created = await prisma.initiation.create({
     data: {
@@ -47,6 +76,14 @@ export async function generateInitiation(
     },
   });
 
+  await recorder.info(
+    "initiation",
+    "Created initiation for stable context",
+    created.id,
+    cycleRunId,
+    { dedupeHash: hash }
+  );
+
   return {
     id: created.id,
     label: created.label,
@@ -54,5 +91,4 @@ export async function generateInitiation(
     metadata: created.metadata as Record<string, unknown>,
   };
 }
-
 

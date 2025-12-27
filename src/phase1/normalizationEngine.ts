@@ -5,11 +5,26 @@ export interface NormalizationResultItem {
   normalizationItemId: string;
 }
 
+export interface NormalizationInput {
+  transformationId: string;
+  payload: Buffer;
+}
+
 export async function normalizePayloads(
   cycleRunId: string,
-  payloads: Buffer[]
+  inputs: NormalizationInput[]
 ): Promise<NormalizationResultItem[]> {
   const prisma = getPrismaClient();
+
+  if (inputs.length === 0) {
+    await recorder.warn(
+      "normalization",
+      "No successful transformations provided for normalization",
+      undefined,
+      cycleRunId
+    );
+    return [];
+  }
 
   const batch = await prisma.normalizationBatch.create({
     data: {
@@ -29,11 +44,12 @@ export async function normalizePayloads(
 
   // For demonstration, we treat the external processor as a no-op that marks
   // items as normalized without interpreting payload content.
-  for (let i = 0; i < payloads.length; i += 1) {
+  for (const input of inputs) {
     const item = await prisma.normalizationItem.create({
       data: {
         batchId: batch.id,
         status: "success",
+        transformationId: input.transformationId,
       },
     });
 
@@ -41,7 +57,8 @@ export async function normalizePayloads(
       "normalization",
       "Normalized payload item",
       item.id,
-      cycleRunId
+      cycleRunId,
+      { transformationId: input.transformationId }
     );
 
     results.push({ normalizationItemId: item.id });
