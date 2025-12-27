@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model CycleRun {
+  id          String   @id @default(cuid())
+  startedAt   DateTime @default(now())
+  finishedAt  DateTime?
+  status      String   // running | success | partial_success | failed
+  contextJson Json?
+
+  initiations Initiation[]
+  records     ExecutionRecord[]
+}
+
+model Initiation {
+  id          String   @id @default(cuid())
+  label       String
+  weight      Float
+  metadata    Json
+  dedupeHash  String
+  createdAt   DateTime @default(now())
+
+  cycleRunId  String?
+  cycleRun    CycleRun? @relation(fields: [cycleRunId], references: [id])
+
+  transformations Transformation[]
+
+  @@index([dedupeHash])
+}
+
+model Transformation {
+  id             String   @id @default(cuid())
+  tier           Int      // 1, 2, 3
+  attempt        Int
+  status         String   // pending | success | failed
+  errorMessage   String?
+  createdAt      DateTime @default(now())
+
+  initiationId   String?
+  initiation     Initiation? @relation(fields: [initiationId], references: [id])
+
+  normalizationItems NormalizationItem[]
+}
+
+model NormalizationBatch {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  status       String   // pending | processing | partial_failed | completed | failed
+  processorRef String?
+
+  items        NormalizationItem[]
+}
+
+model NormalizationItem {
+  id                   String             @id @default(cuid())
+  status               String             // pending | success | failed
+  errorMessage         String?
+  createdAt            DateTime           @default(now())
+
+  batchId              String?
+  batch                NormalizationBatch? @relation(fields: [batchId], references: [id])
+
+  transformationId     String?
+  transformation       Transformation?    @relation(fields: [transformationId], references: [id])
+
+  dispatchJobs         DispatchJob[]
+}
+
+model DispatchJob {
+  id                 String   @id @default(cuid())
+  endpointKey        String
+  status             String   // pending | delivering | delivered | failed
+  attempt            Int      @default(0)
+  lastError          String?
+  receiptJson        Json?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  normalizationItemId String?
+  normalizationItem   NormalizationItem? @relation(fields: [normalizationItemId], references: [id])
+}
+
+model ExecutionRecord {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  scope      String   // cycle | initiation | transformation | normalization | dispatch | governance
+  refId      String?
+  level      String   // info | warning | error
+  message    String
+  details    Json?
+
+  cycleRunId String?
+  cycleRun   CycleRun? @relation(fields: [cycleRunId], references: [id])
+}
+
+model TelemetryEvent {
+  id         String   @id @default(cuid())
+  eventType  String   // execution_started | artifact_emitted | delivery_confirmed | anomaly_detected
+  profileId  String?
+  runId      String?
+  namespace  String?
+  timestamp  DateTime @default(now())
+  metadata   Json
+
+  @@index([eventType])
+  @@index([profileId])
+  @@index([runId])
+}
+
+model AdvisorySignal {
+  id            String   @id @default(cuid())
+  profileId     String
+  signal        String
+  confidence    Float
+  recommendation String
+  createdAt     DateTime @default(now())
+
+  @@index([profileId])
+}
+
+model StrategyProposal {
+  id             String   @id @default(cuid())
+  profileId      String
+  signalId       String?
+  description    String
+  suggestedChange Json
+  status         String   // pending | approved | rejected
+  createdAt      DateTime @default(now())
+}
+
+model ValueLedgerEntry {
+  id           String   @id @default(cuid())
+  profileId    String
+  runId        String?
+  valueTags    Json
+  weight       Float
+  metadata     Json?
+  createdAt    DateTime @default(now())
+}
+
+model GovernanceSetting {
+  id             String   @id @default(cuid())
+  namespace      String
+  key            String
+  value          Json
+  createdAt      DateTime @default(now())
+
+  @@unique([namespace, key])
+}
+
+model AuditTrailEntry {
+  id           String   @id @default(cuid())
+  namespace    String?
+  actor        String?
+  action       String
+  details      Json?
+  createdAt    DateTime @default(now())
+}
+
+

@@ -1,0 +1,14 @@
+[
+  {
+    "profile_id": "default-profile",
+    "label": "Default Profile",
+    "style_vector": {},
+    "asset_bindings": {},
+    "execution_rules": {},
+    "distribution_map": [],
+    "value_tags": ["default"],
+    "state": "enabled"
+  }
+]
+
+

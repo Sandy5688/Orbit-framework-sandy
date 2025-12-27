@@ -1,0 +1,14 @@
+[
+  {
+    "run_profile_id": "default-run-profile",
+    "profile_id": "default-profile",
+    "execution_policy": {},
+    "asset_bundle": {},
+    "distribution_targets": [],
+    "value_tags": ["default"],
+    "state": "enabled",
+    "namespace": "default"
+  }
+]
+
+
