@@ -12,12 +12,38 @@ export async function enqueueDispatchJobs(
   const prisma = getPrismaClient();
 
   for (const normalizationItemId of normalizationItemIds) {
+    const endpoint = dispatchConfig.get(endpointKey);
+
+    // Idempotency: avoid enqueuing duplicate jobs for the same
+    // normalizationItemId/endpointKey pair.
+    const existing = await prisma.dispatchJob.findFirst({
+      where: {
+        normalizationItemId,
+        endpointKey,
+      },
+    });
+
+    if (existing) {
+      await recorder.info(
+        "dispatch",
+        "Skipped enqueue of duplicate dispatch job",
+        existing.id,
+        cycleRunId,
+        { normalizationItemId, endpointKey }
+      );
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
     const job = await prisma.dispatchJob.create({
       data: {
         endpointKey,
         status: "pending",
         normalizationItemId,
-      },
+        endpointUrl: endpoint?.url ?? null,
+        endpointMethod: endpoint?.method ?? "POST",
+        tokenSnapshot: endpoint?.token ?? null,
+      } as any,
     });
 
     await recorder.info(
@@ -34,6 +60,10 @@ export async function processDispatchQueue(
   context?: CycleContext
 ): Promise<void> {
   const prisma = getPrismaClient();
+
+  const maxAttemptsEnv = process.env.ORBIT_MAX_DISPATCH_RETRIES;
+  const maxAttempts =
+    maxAttemptsEnv !== undefined ? Number(maxAttemptsEnv) || 3 : 3;
 
   // Scope dispatch processing to the current cycle by resolving normalization
   // items that belong to this cycle's transformations/initiations.
@@ -69,9 +99,15 @@ export async function processDispatchQueue(
   });
 
   for (const job of pendingJobs) {
-    const endpoint = dispatchConfig.get(job.endpointKey);
+    // Prefer the snapshotted endpoint details captured at enqueue time to
+    // ensure mid-cycle config changes do not affect in-flight jobs.
+    const endpoint = {
+      url: job.endpointUrl ?? dispatchConfig.get(job.endpointKey)?.url,
+      method: job.endpointMethod ?? dispatchConfig.get(job.endpointKey)?.method ?? "POST",
+      token: job.tokenSnapshot ?? dispatchConfig.get(job.endpointKey)?.token,
+    };
 
-    if (!endpoint) {
+    if (!endpoint.url) {
       await prisma.dispatchJob.update({
         where: { id: job.id },
         data: {
@@ -148,20 +184,58 @@ export async function processDispatchQueue(
         );
       }
     } catch (error) {
-      await prisma.dispatchJob.update({
-        where: { id: job.id },
-        data: {
-          status: "failed",
-          lastError:
-            error instanceof Error ? error.message : "Unknown dispatch error",
-        },
-      });
+      const lastError =
+        error instanceof Error ? error.message : "Unknown dispatch error";
+
+      const nextAttempt = job.attempt + 1;
+      const isExhausted = nextAttempt >= maxAttempts;
+
+      if (isExhausted) {
+        // Move job to dead-letter queue and mark as failed; do not retry.
+        await prisma.dispatchJob.update({
+          where: { id: job.id },
+          data: {
+            status: "failed",
+            attempt: nextAttempt,
+            lastError,
+          },
+        });
+
+        await prisma.deadLetterDispatch.create({
+          data: {
+            dispatchJobId: job.id,
+            normalizationItemId: job.normalizationItemId,
+            endpointKey: job.endpointKey,
+            lastStatus: null,
+            lastError,
+            payloadMeta: {
+              cycleRunId,
+            } as any,
+          },
+        });
+      } else {
+        // Increment attempt counter and leave status as pending so the job can
+        // be retried on the next processing pass.
+        await prisma.dispatchJob.update({
+          where: { id: job.id },
+          data: {
+            attempt: nextAttempt,
+            lastError,
+          },
+        });
+      }
+
       await recorder.error(
         "dispatch",
-        "Dispatch job failed",
+        isExhausted ? "Dispatch job moved to dead-letter queue" : "Dispatch job failed",
         job.id,
         cycleRunId,
-        { error }
+        {
+          error,
+          attempt: nextAttempt,
+          maxAttempts,
+          deadLettered: isExhausted,
+        }
       );
     }
   }

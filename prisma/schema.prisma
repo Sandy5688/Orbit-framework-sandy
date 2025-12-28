@@ -16,6 +16,7 @@ model CycleRun {
 
   initiations Initiation[]
   records     ExecutionRecord[]
+  checkpoints CycleCheckpoint[]
 }
 
 model Initiation {
@@ -23,15 +24,21 @@ model Initiation {
   label       String
   weight      Float
   metadata    Json
-  dedupeHash  String
+  /// Deterministic hash for idempotent execution per run profile / context.
+  initiationHash String
   createdAt   DateTime @default(now())
+
+  /// Run profile identifier from config that produced this initiation (if any).
+  runProfileId String?
 
   cycleRunId  String?
   cycleRun    CycleRun? @relation(fields: [cycleRunId], references: [id])
 
   transformations Transformation[]
 
-  @@index([dedupeHash])
+  @@index([initiationHash])
+  /// Prevent duplicate initiations for the same logical execution and run profile.
+  @@unique([initiationHash, runProfileId])
 }
 
 model Transformation {
@@ -70,6 +77,7 @@ model NormalizationItem {
   transformation       Transformation?    @relation(fields: [transformationId], references: [id])
 
   dispatchJobs         DispatchJob[]
+  deadLetterDispatches DeadLetterDispatch[]
 }
 
 model DispatchJob {
@@ -77,6 +85,12 @@ model DispatchJob {
   endpointKey        String
   status             String   // pending | delivering | delivered | failed
   attempt            Int      @default(0)
+  /// Snapshot of endpoint URL at enqueue time for rotation safety.
+  endpointUrl        String?
+  /// Snapshot of HTTP method at enqueue time for rotation safety.
+  endpointMethod     String?
+  /// Snapshot of auth token/secret at enqueue time for rotation safety.
+  tokenSnapshot      String?
   lastError          String?
   receiptJson        Json?
   createdAt          DateTime @default(now())
@@ -84,6 +98,7 @@ model DispatchJob {
 
   normalizationItemId String?
   normalizationItem   NormalizationItem? @relation(fields: [normalizationItemId], references: [id])
+  deadLetterEntries   DeadLetterDispatch[]
 }
 
 model ExecutionRecord {
@@ -102,6 +117,7 @@ model ExecutionRecord {
 model TelemetryEvent {
   id         String   @id @default(cuid())
   eventType  String   // execution_started | artifact_emitted | delivery_confirmed | anomaly_detected
+  cycleRunId String?
   profileId  String?
   runId      String?
   namespace  String?
@@ -113,9 +129,24 @@ model TelemetryEvent {
   @@index([runId])
 }
 
+/// Cold archive table for telemetry events that have been pruned from the hot
+/// TelemetryEvent table.
+model TelemetryArchive {
+  id         String   @id @default(cuid())
+  eventType  String
+  cycleRunId String?
+  profileId  String?
+  runId      String?
+  namespace  String?
+  timestamp  DateTime
+  metadata   Json
+  archivedAt DateTime @default(now())
+}
+
 model AdvisorySignal {
   id            String   @id @default(cuid())
   profileId     String
+  cycleRunId    String?
   signal        String
   confidence    Float
   recommendation String
@@ -127,6 +158,7 @@ model AdvisorySignal {
 model StrategyProposal {
   id             String   @id @default(cuid())
   profileId      String
+  cycleRunId     String?
   signalId       String?
   description    String
   suggestedChange Json
@@ -137,6 +169,8 @@ model StrategyProposal {
 model ValueLedgerEntry {
   id           String   @id @default(cuid())
   profileId    String
+  /// cycle_run_id the value tags were associated with (typically CycleRun.id)
+  cycleRunId   String?
   runId        String?
   valueTags    Json
   weight       Float
@@ -156,11 +190,44 @@ model GovernanceSetting {
 
 model AuditTrailEntry {
   id           String   @id @default(cuid())
+  cycleRunId   String?
   namespace    String?
   actor        String?
   action       String
   details      Json?
   createdAt    DateTime @default(now())
+}
+
+/// Append-only cycle checkpoint log used for crash-resilient recovery.
+model CycleCheckpoint {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  /// e.g. cycle_started | tier1_complete | tier2_complete | tier3_complete | dispatch_complete | cycle_finished
+  stage      String
+  details    Json?
+
+  cycleRunId String
+  cycleRun   CycleRun @relation(fields: [cycleRunId], references: [id])
+
+  @@index([cycleRunId, createdAt])
+}
+
+/// Dead-letter queue entry for dispatch jobs that exceeded retry thresholds.
+model DeadLetterDispatch {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  requeuedAt         DateTime?
+  dispatchJobId      String
+  normalizationItemId String?
+  endpointKey        String
+  lastStatus         Int?
+  lastError          String?
+  payloadMeta        Json?
+
+  dispatchJob        DispatchJob @relation(fields: [dispatchJobId], references: [id])
+  normalizationItem  NormalizationItem? @relation(fields: [normalizationItemId], references: [id])
+
+  @@index([createdAt])
 }
 
 

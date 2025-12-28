@@ -21,6 +21,40 @@ export interface CycleContext {
   runProfileId?: string;
   instructionId?: string;
   namespace?: string;
+  configVersion?: string;
+}
+
+let activeCycleCount = 0;
+
+export function getActiveCycleCount(): number {
+  return activeCycleCount;
+}
+
+async function appendCheckpoint(
+  cycleRunId: string,
+  stage: string,
+  details?: unknown
+): Promise<void> {
+  const prisma = getPrismaClient();
+  await prisma.cycleCheckpoint.create({
+    data: {
+      cycleRunId,
+      stage,
+      details: details as any,
+    },
+  });
+}
+
+async function getLastCheckpoint(cycleRunId: string): Promise<{
+  stage: string;
+} | null> {
+  const prisma = getPrismaClient();
+  const last = await prisma.cycleCheckpoint.findFirst({
+    where: { cycleRunId },
+    orderBy: { createdAt: "desc" },
+  });
+  if (!last) return null;
+  return { stage: last.stage };
 }
 
 export async function runCycle(
@@ -37,7 +71,8 @@ export async function runCycle(
   const namespaceKey = context?.namespace ?? "default";
 
   // Prevent overlapping cycles per namespace by checking for an existing
-  // running cycle with the same namespace.
+  // running cycle with the same namespace. If one exists, we resume it instead
+  // of starting a new one.
   const existingRunning = await prisma.cycleRun.findFirst({
     where: {
       status: "running",
@@ -48,32 +83,35 @@ export async function runCycle(
     },
   });
 
-  if (existingRunning) {
+  let cycle =
+    existingRunning ??
+    (await prisma.cycleRun.create({
+      data: {
+        status: "running",
+        contextJson: {
+          trigger,
+          profileId: context?.profileId ?? null,
+          runProfileId: context?.runProfileId ?? null,
+          instructionId: context?.instructionId ?? null,
+          namespace: context?.namespace ?? null,
+        } as any,
+      },
+    }));
+
+  if (!existingRunning) {
+    await appendCheckpoint(cycle.id, "cycle_started", { trigger, context });
+  } else {
     logger.warn(
-      `Cycle already running for namespace ${namespaceKey}; skipping new cycle`
+      `Resuming existing running cycle for namespace ${namespaceKey} (id=${cycle.id})`
     );
-    await recorder.warn(
+    await recorder.info(
       "cycle",
-      "Skipped cycle due to existing running cycle for namespace",
-      existingRunning.id,
-      existingRunning.id,
+      "Resuming existing running cycle for namespace",
+      cycle.id,
+      cycle.id,
       { namespace: context?.namespace ?? null, trigger }
     );
-    return "";
   }
-
-  const cycle = await prisma.cycleRun.create({
-    data: {
-      status: "running",
-      contextJson: {
-        trigger,
-        profileId: context?.profileId ?? null,
-        runProfileId: context?.runProfileId ?? null,
-        instructionId: context?.instructionId ?? null,
-        namespace: context?.namespace ?? null,
-      } as any,
-    },
-  });
 
   let initiationSucceeded = false;
   let transformationsSucceeded = false;
@@ -84,11 +122,15 @@ export async function runCycle(
   let transformationsResult: TransformationResult | null = null;
   let normalizationItemIds: string[] = [];
 
+  activeCycleCount += 1;
+
   try {
-    await recorder.info("cycle", "Cycle started", cycle.id, cycle.id, {
-      trigger,
-      context,
-    });
+    if (!existingRunning) {
+      await recorder.info("cycle", "Cycle started", cycle.id, cycle.id, {
+        trigger,
+        context,
+      });
+    }
 
     await emitTelemetryEvent(
       "execution_started",
@@ -99,6 +141,9 @@ export async function runCycle(
       },
       { cycleRunId: cycle.id }
     );
+
+    const lastCheckpoint = await getLastCheckpoint(cycle.id);
+    const lastStage = lastCheckpoint?.stage ?? null;
 
     // --- Initiation stage ---
     try {
@@ -137,29 +182,73 @@ export async function runCycle(
           cycle.id
         );
 
-        transformationsResult = await runTieredTransformations(
-          cycle.id,
-          initiationId
-        );
-
-        const successfulTiers =
-          transformationsResult.tiers.filter((t) => t.success).length;
-
-        transformationsSucceeded = successfulTiers > 0;
-
-        await recorder.info(
-          "transformation",
-          "Transformation stage completed",
-          initiationId,
-          cycle.id,
-          {
-            tiers: transformationsResult.tiers.map((t) => ({
-              tier: t.tier,
-              success: t.success,
-              transformationId: t.transformationId,
-            })),
+        // If we already reached tier-3 (or beyond) according to checkpoints,
+        // we can reuse existing Transformation rows and skip re-running tiers.
+        if (
+          lastStage === "tier3_complete" ||
+          lastStage === "dispatch_complete" ||
+          lastStage === "cycle_finished"
+        ) {
+          transformationsSucceeded = true;
+          await recorder.info(
+            "transformation",
+            "Transformation stage skipped due to completed checkpoint",
+            initiationId,
+            cycle.id
+          );
+        } else {
+          // Determine from which tier we should resume based on the last
+          // checkpoint. If the process crashed mid-cycle, this allows us to
+          // resume from Tier-2 or Tier-3 without re-running earlier tiers.
+          let startTier: 1 | 2 | 3 = 1;
+          if (lastStage === "tier1_complete") {
+            startTier = 2;
+          } else if (lastStage === "tier2_complete") {
+            startTier = 3;
           }
-        );
+
+          transformationsResult = await runTieredTransformations(
+            cycle.id,
+            initiationId,
+            startTier
+          );
+
+          const successfulTiers =
+            transformationsResult.tiers.filter((t) => t.success).length;
+
+          transformationsSucceeded = successfulTiers > 0;
+
+          // Record per-tier checkpoints for successfully completed tiers. This is
+          // append-only; duplicate checkpoints for the same stage are harmless,
+          // as only the latest is used for resume decisions.
+          for (const tierResult of transformationsResult.tiers) {
+            if (tierResult.success) {
+              const stageName =
+                tierResult.tier === 1
+                  ? "tier1_complete"
+                  : tierResult.tier === 2
+                  ? "tier2_complete"
+                  : "tier3_complete";
+              await appendCheckpoint(cycle.id, stageName, {
+                transformationId: tierResult.transformationId,
+              });
+            }
+          }
+
+          await recorder.info(
+            "transformation",
+            "Transformation stage completed",
+            initiationId,
+            cycle.id,
+            {
+              tiers: transformationsResult.tiers.map((t) => ({
+                tier: t.tier,
+                success: t.success,
+                transformationId: t.transformationId,
+              })),
+            }
+          );
+        }
       } catch (error) {
         await recorder.error(
           "transformation",
@@ -172,7 +261,7 @@ export async function runCycle(
     }
 
     // --- Normalization stage ---
-    if (transformationsSucceeded && transformationsResult) {
+    if (transformationsSucceeded && initiationId) {
       try {
         await recorder.info(
           "normalization",
@@ -181,15 +270,24 @@ export async function runCycle(
           cycle.id
         );
 
+        // Rehydrate all successful transformations for this initiation from the
+        // database so normalization can be safely re-run after a crash without
+        // duplicating work. Payloads are opaque; we derive a stable seed from
+        // the initiation id for downstream processors.
+        const transformations =
+          await prisma.transformation.findMany({
+            where: {
+              initiationId,
+              status: "success",
+            },
+            orderBy: { tier: "asc" },
+          });
+
         const normalizationInputs: NormalizationInput[] =
-          transformationsResult.tiers
-            .filter(
-              (t) => t.success && t.transformationId && t.payload !== undefined
-            )
-            .map((t) => ({
-              transformationId: t.transformationId as string,
-              payload: t.payload as Buffer,
-            }));
+          transformations.map((t) => ({
+            transformationId: t.id,
+            payload: Buffer.from(`init:${initiationId}:tier:${t.tier}`, "utf8"),
+          }));
 
         const normalizationResults = await normalizePayloads(
           cycle.id,
@@ -240,6 +338,10 @@ export async function runCycle(
 
         await processDispatchQueue(cycle.id, context);
         dispatchSucceeded = true;
+
+        await appendCheckpoint(cycle.id, "dispatch_complete", {
+          normalizationItemCount: normalizationItemIds.length,
+        });
 
         await recorder.info(
           "dispatch",
@@ -297,6 +399,16 @@ export async function runCycle(
         dispatch: dispatchSucceeded,
       },
     });
+
+    await appendCheckpoint(cycle.id, "cycle_finished", {
+      finalStatus,
+      stages: {
+        initiation: initiationSucceeded,
+        transformations: transformationsSucceeded,
+        normalization: normalizationSucceeded,
+        dispatch: dispatchSucceeded,
+      },
+    });
   } catch (error) {
     await prisma.cycleRun.update({
       where: { id: cycle.id },
@@ -312,6 +424,8 @@ export async function runCycle(
       cycle.id,
       { error }
     );
+  } finally {
+    activeCycleCount -= 1;
   }
 
   return cycle.id;

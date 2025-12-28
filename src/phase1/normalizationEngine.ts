@@ -45,13 +45,24 @@ export async function normalizePayloads(
   // For demonstration, we treat the external processor as a no-op that marks
   // items as normalized without interpreting payload content.
   for (const input of inputs) {
-    const item = await prisma.normalizationItem.create({
-      data: {
-        batchId: batch.id,
-        status: "success",
+    // Idempotency: if a successful normalization item already exists for this
+    // transformation, reuse it instead of creating a duplicate.
+    const existing = await prisma.normalizationItem.findFirst({
+      where: {
         transformationId: input.transformationId,
+        status: "success",
       },
     });
+
+    const item =
+      existing ??
+      (await prisma.normalizationItem.create({
+        data: {
+          batchId: batch.id,
+          status: "success",
+          transformationId: input.transformationId,
+        },
+      }));
 
     await recorder.info(
       "normalization",

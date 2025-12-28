@@ -13,6 +13,7 @@ export async function recordValueTags(
   await prisma.valueLedgerEntry.create({
     data: {
       profileId: runProfile.profile_id,
+      cycleRunId: runId,
       runId,
       valueTags: runProfile.value_tags as any,
       weight: 1.0,

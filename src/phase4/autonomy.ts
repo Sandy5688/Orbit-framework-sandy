@@ -2,8 +2,14 @@ import { env } from "../config/env";
 import { logger } from "../shared/logger";
 
 export function mutateProfileConfiguration(): void {
-  if (!env.PHASE4_ENABLED) {
-    logger.debug("Phase-4 autonomous profile mutation is disabled");
+  if (!env.PHASE4_ENABLED || !env.PHASE4_ALLOW_MUTATION) {
+    logger.info(
+      "Phase-4 autonomous profile mutation skipped due to safeguards",
+      {
+        PHASE4_ENABLED: env.PHASE4_ENABLED,
+        PHASE4_ALLOW_MUTATION: env.PHASE4_ALLOW_MUTATION,
+      }
+    );
     return;
   }
 
@@ -12,8 +18,11 @@ export function mutateProfileConfiguration(): void {
 }
 
 export function updateDynamicValueModel(): void {
-  if (!env.PHASE4_ENABLED) {
-    logger.debug("Phase-4 dynamic value modeling is disabled");
+  if (!env.PHASE4_ENABLED || !env.PHASE4_ALLOW_MUTATION) {
+    logger.info("Phase-4 dynamic value modeling skipped due to safeguards", {
+      PHASE4_ENABLED: env.PHASE4_ENABLED,
+      PHASE4_ALLOW_MUTATION: env.PHASE4_ALLOW_MUTATION,
+    });
     return;
   }
 

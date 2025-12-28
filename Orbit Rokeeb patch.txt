@@ -1,0 +1,125 @@
+
+## ORBIT FRAMEWORK Patch Sheet
+
+###1.  Crash-Resilient Cycle Recovery
+**Requirements:**
+* Persist cycle state checkpoints:
+```text
+cycle_started
+tier1_complete
+tier2_complete
+tier3_complete
+dispatch_complete
+cycle_finished
+* Resume from last valid checkpoint on restart.
+* Checkpoint storage must be **append-only**.
+**Acceptance Criteria:**
+* VPS/process kill during Tier-2 → resume Tier-2 only.
+* No duplicate dispatches.
+**Fix Modules:** `phase1/orchestrator.js`, `phase1/transformations.js`, `phase1/dispatchQueue.js`
+
+###2. Execution Idempotency Lock
+**Requirements:**
+* Deterministic `initiation_hash` for each initiation.
+* DB-level unique constraint:
+```sql
+UNIQUE (initiation_hash, run_profile_id)
+```
+* Safe no-op on duplicate detection.
+**Acceptance Criteria:**
+* Same initiation cannot execute twice.
+**Target Modules:** `phase1/initiationSelector.js`, Prisma schema updates (`Initiation` table).
+
+###3. Dispatch Dead-Letter Queue (DLQ)
+**Requirements:**
+* Max retry threshold (configurable).
+* Failed jobs move to `dead_letter_dispatch`.
+* Manual requeue only.
+**Acceptance Criteria:**
+* No infinite retry loops.
+* DLQ visible in DB.
+**fix Modules:** `phase1/dispatchQueue.js`, `prisma/schema.prisma` (add `DeadLetterDispatch` table).
+
+###4. Config Schema Validation
+**Requirements:*
+* JSON Schema validation for:
+  * `profiles.json`
+  * `runProfiles.json`
+  * `execution policies`
+* Validate on **boot** and **hot reload**.
+* Hard fail on invalid schema.
+**Acceptance Criteria:**
+* Invalid config prevents execution start.
+**Fix Modules:** `phase2/profileEngine.js`, `phase2/runProfileOrchestration.js`.
+
+###5. Secret Snapshot & Rotation Safety
+**Requirements:**
+* Snapshot secrets at **cycle start**.
+* Secrets immutable for the **entire cycle**.
+* Reload secrets only **between cycles**.
+**Acceptance Criteria:**
+* Mid-cycle token rotation does not break execution.
+**Target Modules:** `phase1/orchestrator.js`, `phase2/bridge.js`.
+
+###6. Telemetry Retention & Pruning
+**Requirements:**
+* Retention policies (env-driven).
+* Auto-prune expired telemetry.
+* Optional cold archive flag.
+**Acceptance Criteria:**
+* Telemetry size remains bounded.
+**fix Modules:** `phase3/telemetryBus.js`, `phase3/governance.js`.
+
+###7. Operational Health Endpoints
+**Requirements:**
+Expose the following endpoints:
+```text
+GET /health   → process alive
+GET /ready    → DB + config loaded
+GET /metrics  → cycle counts, failures
+**Acceptance Criteria:**
+* Endpoints return deterministic status.
+**Fix Modules:** `dist/index.js` or new `health.js`.
+
+###8. Deployment & Config Guardrails
+**Requirements:**
+* Prevent config reload **during active cycle**.
+* Versioned config snapshots per cycle.
+* Graceful reload only when idle.
+**Acceptance Criteria:**
+* No half-applied configs.
+**Fix Modules:** `phase2/profileEngine.js`, `phase2/runProfileOrchestration.js`.
+
+###9. End-to-End Fault Simulation
+**Requirements:**
+Simulate and test system recovery for:
+* Process kill
+* DB timeout
+* Dispatch failure
+* Invalid config injection
+**Acceptance Criteria:**
+* System survives without corruption.
+**Fix Modules:** `tests/faultSimulation.js` (or equivalent manual test scripts).
+
+###10. Normalization & Transformation Validation
+* Ensure Tier-1 → Tier-3 outputs are type-checked or opaque-valid before dispatch.
+* Prevent corrupted payloads from killing dispatch.
+**Fix Modules:** `phase1/transformations.js`, `phase1/normalizationEngine.js`
+
+###11. Audit & Ledger Checkpointing
+* Phase-2/3 ledger entries (value tagging, telemetry, advisory signals) **must be append-only**.
+* Optional: mark transactions with `cycle_run_id` and timestamp.
+**Fix Modules:** `phase2/valueTagging.js`, `phase3/telemetryBus.js`
+
+###12. Phase-4 Safe Guard
+* Even if Phase-4 is disabled, generate logs.
+* Accidental `PHASE4_ENABLED = true` flag **cannot mutate profiles**.
+**Fix Modules:** `phase4/autonomy.js`
+
+### Required Deliverables
+* DB migrations (Prisma)
+* `.env.example`
+* README → **Production Safeguards & Patch Notes**
+* Docker image builds clean
+* Verified E2E cycle execution with partial failures
+* Append-only checkpoint logs

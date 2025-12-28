@@ -14,7 +14,7 @@ export async function generateInitiation(
 ): Promise<InitiationObject> {
   const prisma = getPrismaClient();
 
-  // Derive a stable deduplication source from execution context only.
+  // Derive a stable, deterministic source from execution context only.
   const cycle = await prisma.cycleRun.findUnique({
     where: { id: cycleRunId },
   });
@@ -35,10 +35,16 @@ export async function generateInitiation(
 
   const dedupeSource = JSON.stringify(stableContext);
 
-  const hash = crypto.createHash("sha256").update(dedupeSource).digest("hex");
+  const initiationHash = crypto
+    .createHash("sha256")
+    .update(dedupeSource)
+    .digest("hex");
 
   const existing = await prisma.initiation.findFirst({
-    where: { dedupeHash: hash },
+    where: {
+      initiationHash,
+      runProfileId: context.runProfileId ?? null,
+    },
   });
 
   if (existing) {
@@ -49,7 +55,7 @@ export async function generateInitiation(
       "Reusing existing initiation for stable context",
       existing.id,
       cycleRunId,
-      { dedupeHash: hash }
+      { initiationHash }
     );
 
     return {
@@ -60,35 +66,66 @@ export async function generateInitiation(
     };
   }
 
-  const label = `auto-initiation-${hash.slice(0, 8)}`;
+  const label = `auto-initiation-${initiationHash.slice(0, 8)}`;
   const weight = 1.0;
   const metadata: Record<string, unknown> = {
     ...stableContext,
   };
 
-  const created = await prisma.initiation.create({
-    data: {
-      label,
-      weight,
-      metadata: metadata as any,
-      dedupeHash: hash,
+  try {
+    const created = await prisma.initiation.create({
+      data: {
+        label,
+        weight,
+        metadata: metadata as any,
+        initiationHash,
+        runProfileId: context.runProfileId ?? null,
+        cycleRunId,
+      },
+    });
+
+    await recorder.info(
+      "initiation",
+      "Created initiation for stable context",
+      created.id,
       cycleRunId,
-    },
-  });
+      { initiationHash }
+    );
 
-  await recorder.info(
-    "initiation",
-    "Created initiation for stable context",
-    created.id,
-    cycleRunId,
-    { dedupeHash: hash }
-  );
+    return {
+      id: created.id,
+      label: created.label,
+      weight: created.weight,
+      metadata: created.metadata as Record<string, unknown>,
+    };
+  } catch (error) {
+    // In case of a race where another process created the same initiationHash /
+    // runProfileId combination, fall back to retrieving and returning it.
+    const fallback = await prisma.initiation.findFirst({
+      where: {
+        initiationHash,
+        runProfileId: context.runProfileId ?? null,
+      },
+    });
 
-  return {
-    id: created.id,
-    label: created.label,
-    weight: created.weight,
-    metadata: created.metadata as Record<string, unknown>,
-  };
+    if (!fallback) {
+      throw error;
+    }
+
+    await recorder.info(
+      "initiation",
+      "Recovered existing initiation after unique constraint race",
+      fallback.id,
+      cycleRunId,
+      { initiationHash }
+    );
+
+    return {
+      id: fallback.id,
+      label: fallback.label,
+      weight: fallback.weight,
+      metadata: fallback.metadata as Record<string, unknown>,
+    };
+  }
 }
 

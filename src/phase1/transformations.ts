@@ -45,6 +45,16 @@ async function runTier(
           ? Buffer.from(input.toString("hex"))
           : Buffer.from(input.toString("utf8"));
 
+      // Opaque validation: ensure the transformation output is non-empty and
+      // within a reasonable size bound so obviously corrupted payloads do not
+      // propagate further into the pipeline.
+      if (!Buffer.isBuffer(output) || output.length === 0) {
+        throw new Error(`Tier-${tier} produced invalid empty payload`);
+      }
+      if (output.length > 1024 * 1024) {
+        throw new Error(`Tier-${tier} produced unexpectedly large payload`);
+      }
+
       await prisma.transformation.update({
         where: { id: transformation.id },
         data: { status: "success" },
@@ -86,13 +96,20 @@ async function runTier(
 
 export async function runTieredTransformations(
   cycleRunId: string,
-  initiationId: string
+  initiationId: string,
+  startTier: 1 | 2 | 3 = 1
 ): Promise<TransformationResult> {
   const seedPayload = Buffer.from(`init:${initiationId}`, "utf8");
 
   const tiers: TierTransformationResult[] = [];
 
   for (const tier of [1, 2, 3] as const) {
+    if (tier < startTier) {
+      // Skip tiers that have already been processed according to the last
+      // checkpoint. Existing successful Transformation rows for these tiers
+      // are reused implicitly by downstream stages via DB queries.
+      continue;
+    }
     try {
       const { payload, transformationId } = await runTier(
         cycleRunId,
