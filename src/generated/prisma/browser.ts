@@ -13,10 +13,10 @@
  * 🟢 You can import this file directly.
  */
 
-import * as Prisma from './internal/prismaNamespaceBrowser.ts'
+import * as Prisma from './internal/prismaNamespaceBrowser'
 export { Prisma }
-export * as $Enums from './enums.ts'
-export * from './enums.ts';
+export * as $Enums from './enums'
+export * from './enums';
 /**
  * Model CycleRun
  * 
@@ -58,6 +58,12 @@ export type ExecutionRecord = Prisma.ExecutionRecordModel
  */
 export type TelemetryEvent = Prisma.TelemetryEventModel
 /**
+ * Model TelemetryArchive
+ * Cold archive table for telemetry events that have been pruned from the hot
+ * TelemetryEvent table.
+ */
+export type TelemetryArchive = Prisma.TelemetryArchiveModel
+/**
  * Model AdvisorySignal
  * 
  */
@@ -82,3 +88,13 @@ export type GovernanceSetting = Prisma.GovernanceSettingModel
  * 
  */
 export type AuditTrailEntry = Prisma.AuditTrailEntryModel
+/**
+ * Model CycleCheckpoint
+ * Append-only cycle checkpoint log used for crash-resilient recovery.
+ */
+export type CycleCheckpoint = Prisma.CycleCheckpointModel
+/**
+ * Model DeadLetterDispatch
+ * Dead-letter queue entry for dispatch jobs that exceeded retry thresholds.
+ */
+export type DeadLetterDispatch = Prisma.DeadLetterDispatchModel

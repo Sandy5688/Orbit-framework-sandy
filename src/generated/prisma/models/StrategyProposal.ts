@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model StrategyProposal
@@ -27,6 +27,7 @@ export type AggregateStrategyProposal = {
 export type StrategyProposalMinAggregateOutputType = {
   id: string | null
   profileId: string | null
+  cycleRunId: string | null
   signalId: string | null
   description: string | null
   status: string | null
@@ -36,6 +37,7 @@ export type StrategyProposalMinAggregateOutputType = {
 export type StrategyProposalMaxAggregateOutputType = {
   id: string | null
   profileId: string | null
+  cycleRunId: string | null
   signalId: string | null
   description: string | null
   status: string | null
@@ -45,6 +47,7 @@ export type StrategyProposalMaxAggregateOutputType = {
 export type StrategyProposalCountAggregateOutputType = {
   id: number
   profileId: number
+  cycleRunId: number
   signalId: number
   description: number
   suggestedChange: number
@@ -57,6 +60,7 @@ export type StrategyProposalCountAggregateOutputType = {
 export type StrategyProposalMinAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   signalId?: true
   description?: true
   status?: true
@@ -66,6 +70,7 @@ export type StrategyProposalMinAggregateInputType = {
 export type StrategyProposalMaxAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   signalId?: true
   description?: true
   status?: true
@@ -75,6 +80,7 @@ export type StrategyProposalMaxAggregateInputType = {
 export type StrategyProposalCountAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   signalId?: true
   description?: true
   suggestedChange?: true
@@ -158,6 +164,7 @@ export type StrategyProposalGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type StrategyProposalGroupByOutputType = {
   id: string
   profileId: string
+  cycleRunId: string | null
   signalId: string | null
   description: string
   suggestedChange: runtime.JsonValue
@@ -189,6 +196,7 @@ export type StrategyProposalWhereInput = {
   NOT?: Prisma.StrategyProposalWhereInput | Prisma.StrategyProposalWhereInput[]
   id?: Prisma.StringFilter<"StrategyProposal"> | string
   profileId?: Prisma.StringFilter<"StrategyProposal"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"StrategyProposal"> | string | null
   signalId?: Prisma.StringNullableFilter<"StrategyProposal"> | string | null
   description?: Prisma.StringFilter<"StrategyProposal"> | string
   suggestedChange?: Prisma.JsonFilter<"StrategyProposal">
@@ -199,6 +207,7 @@ export type StrategyProposalWhereInput = {
 export type StrategyProposalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   signalId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   suggestedChange?: Prisma.SortOrder
@@ -212,6 +221,7 @@ export type StrategyProposalWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.StrategyProposalWhereInput[]
   NOT?: Prisma.StrategyProposalWhereInput | Prisma.StrategyProposalWhereInput[]
   profileId?: Prisma.StringFilter<"StrategyProposal"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"StrategyProposal"> | string | null
   signalId?: Prisma.StringNullableFilter<"StrategyProposal"> | string | null
   description?: Prisma.StringFilter<"StrategyProposal"> | string
   suggestedChange?: Prisma.JsonFilter<"StrategyProposal">
@@ -222,6 +232,7 @@ export type StrategyProposalWhereUniqueInput = Prisma.AtLeast<{
 export type StrategyProposalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   signalId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   suggestedChange?: Prisma.SortOrder
@@ -238,6 +249,7 @@ export type StrategyProposalScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StrategyProposalScalarWhereWithAggregatesInput | Prisma.StrategyProposalScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"StrategyProposal"> | string
   profileId?: Prisma.StringWithAggregatesFilter<"StrategyProposal"> | string
+  cycleRunId?: Prisma.StringNullableWithAggregatesFilter<"StrategyProposal"> | string | null
   signalId?: Prisma.StringNullableWithAggregatesFilter<"StrategyProposal"> | string | null
   description?: Prisma.StringWithAggregatesFilter<"StrategyProposal"> | string
   suggestedChange?: Prisma.JsonWithAggregatesFilter<"StrategyProposal">
@@ -248,6 +260,7 @@ export type StrategyProposalScalarWhereWithAggregatesInput = {
 export type StrategyProposalCreateInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   signalId?: string | null
   description: string
   suggestedChange: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -258,6 +271,7 @@ export type StrategyProposalCreateInput = {
 export type StrategyProposalUncheckedCreateInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   signalId?: string | null
   description: string
   suggestedChange: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -268,6 +282,7 @@ export type StrategyProposalUncheckedCreateInput = {
 export type StrategyProposalUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedChange?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -278,6 +293,7 @@ export type StrategyProposalUpdateInput = {
 export type StrategyProposalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedChange?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -288,6 +304,7 @@ export type StrategyProposalUncheckedUpdateInput = {
 export type StrategyProposalCreateManyInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   signalId?: string | null
   description: string
   suggestedChange: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -298,6 +315,7 @@ export type StrategyProposalCreateManyInput = {
 export type StrategyProposalUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedChange?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -308,6 +326,7 @@ export type StrategyProposalUpdateManyMutationInput = {
 export type StrategyProposalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   suggestedChange?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -318,6 +337,7 @@ export type StrategyProposalUncheckedUpdateManyInput = {
 export type StrategyProposalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   signalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   suggestedChange?: Prisma.SortOrder
@@ -328,6 +348,7 @@ export type StrategyProposalCountOrderByAggregateInput = {
 export type StrategyProposalMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   signalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -337,6 +358,7 @@ export type StrategyProposalMaxOrderByAggregateInput = {
 export type StrategyProposalMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   signalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -348,6 +370,7 @@ export type StrategyProposalMinOrderByAggregateInput = {
 export type StrategyProposalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signalId?: boolean
   description?: boolean
   suggestedChange?: boolean
@@ -358,6 +381,7 @@ export type StrategyProposalSelect<ExtArgs extends runtime.Types.Extensions.Inte
 export type StrategyProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signalId?: boolean
   description?: boolean
   suggestedChange?: boolean
@@ -368,6 +392,7 @@ export type StrategyProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
 export type StrategyProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signalId?: boolean
   description?: boolean
   suggestedChange?: boolean
@@ -378,6 +403,7 @@ export type StrategyProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
 export type StrategyProposalSelectScalar = {
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signalId?: boolean
   description?: boolean
   suggestedChange?: boolean
@@ -385,7 +411,7 @@ export type StrategyProposalSelectScalar = {
   createdAt?: boolean
 }
 
-export type StrategyProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "signalId" | "description" | "suggestedChange" | "status" | "createdAt", ExtArgs["result"]["strategyProposal"]>
+export type StrategyProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "cycleRunId" | "signalId" | "description" | "suggestedChange" | "status" | "createdAt", ExtArgs["result"]["strategyProposal"]>
 
 export type $StrategyProposalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StrategyProposal"
@@ -393,6 +419,7 @@ export type $StrategyProposalPayload<ExtArgs extends runtime.Types.Extensions.In
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     profileId: string
+    cycleRunId: string | null
     signalId: string | null
     description: string
     suggestedChange: runtime.JsonValue
@@ -823,6 +850,7 @@ export interface Prisma__StrategyProposalClient<T, Null = never, ExtArgs extends
 export interface StrategyProposalFieldRefs {
   readonly id: Prisma.FieldRef<"StrategyProposal", 'String'>
   readonly profileId: Prisma.FieldRef<"StrategyProposal", 'String'>
+  readonly cycleRunId: Prisma.FieldRef<"StrategyProposal", 'String'>
   readonly signalId: Prisma.FieldRef<"StrategyProposal", 'String'>
   readonly description: Prisma.FieldRef<"StrategyProposal", 'String'>
   readonly suggestedChange: Prisma.FieldRef<"StrategyProposal", 'Json'>

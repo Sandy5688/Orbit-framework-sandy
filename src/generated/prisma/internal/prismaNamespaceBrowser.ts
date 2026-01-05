@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.ts'
-export type * from './prismaNamespace.ts'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -59,11 +59,14 @@ export const ModelName = {
   DispatchJob: 'DispatchJob',
   ExecutionRecord: 'ExecutionRecord',
   TelemetryEvent: 'TelemetryEvent',
+  TelemetryArchive: 'TelemetryArchive',
   AdvisorySignal: 'AdvisorySignal',
   StrategyProposal: 'StrategyProposal',
   ValueLedgerEntry: 'ValueLedgerEntry',
   GovernanceSetting: 'GovernanceSetting',
-  AuditTrailEntry: 'AuditTrailEntry'
+  AuditTrailEntry: 'AuditTrailEntry',
+  CycleCheckpoint: 'CycleCheckpoint',
+  DeadLetterDispatch: 'DeadLetterDispatch'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -98,8 +101,9 @@ export const InitiationScalarFieldEnum = {
   label: 'label',
   weight: 'weight',
   metadata: 'metadata',
-  dedupeHash: 'dedupeHash',
+  initiationHash: 'initiationHash',
   createdAt: 'createdAt',
+  runProfileId: 'runProfileId',
   cycleRunId: 'cycleRunId'
 } as const
 
@@ -146,6 +150,9 @@ export const DispatchJobScalarFieldEnum = {
   endpointKey: 'endpointKey',
   status: 'status',
   attempt: 'attempt',
+  endpointUrl: 'endpointUrl',
+  endpointMethod: 'endpointMethod',
+  tokenSnapshot: 'tokenSnapshot',
   lastError: 'lastError',
   receiptJson: 'receiptJson',
   createdAt: 'createdAt',
@@ -173,6 +180,7 @@ export type ExecutionRecordScalarFieldEnum = (typeof ExecutionRecordScalarFieldE
 export const TelemetryEventScalarFieldEnum = {
   id: 'id',
   eventType: 'eventType',
+  cycleRunId: 'cycleRunId',
   profileId: 'profileId',
   runId: 'runId',
   namespace: 'namespace',
@@ -183,9 +191,25 @@ export const TelemetryEventScalarFieldEnum = {
 export type TelemetryEventScalarFieldEnum = (typeof TelemetryEventScalarFieldEnum)[keyof typeof TelemetryEventScalarFieldEnum]
 
 
+export const TelemetryArchiveScalarFieldEnum = {
+  id: 'id',
+  eventType: 'eventType',
+  cycleRunId: 'cycleRunId',
+  profileId: 'profileId',
+  runId: 'runId',
+  namespace: 'namespace',
+  timestamp: 'timestamp',
+  metadata: 'metadata',
+  archivedAt: 'archivedAt'
+} as const
+
+export type TelemetryArchiveScalarFieldEnum = (typeof TelemetryArchiveScalarFieldEnum)[keyof typeof TelemetryArchiveScalarFieldEnum]
+
+
 export const AdvisorySignalScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  cycleRunId: 'cycleRunId',
   signal: 'signal',
   confidence: 'confidence',
   recommendation: 'recommendation',
@@ -198,6 +222,7 @@ export type AdvisorySignalScalarFieldEnum = (typeof AdvisorySignalScalarFieldEnu
 export const StrategyProposalScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  cycleRunId: 'cycleRunId',
   signalId: 'signalId',
   description: 'description',
   suggestedChange: 'suggestedChange',
@@ -211,6 +236,7 @@ export type StrategyProposalScalarFieldEnum = (typeof StrategyProposalScalarFiel
 export const ValueLedgerEntryScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  cycleRunId: 'cycleRunId',
   runId: 'runId',
   valueTags: 'valueTags',
   weight: 'weight',
@@ -234,6 +260,7 @@ export type GovernanceSettingScalarFieldEnum = (typeof GovernanceSettingScalarFi
 
 export const AuditTrailEntryScalarFieldEnum = {
   id: 'id',
+  cycleRunId: 'cycleRunId',
   namespace: 'namespace',
   actor: 'actor',
   action: 'action',
@@ -242,6 +269,32 @@ export const AuditTrailEntryScalarFieldEnum = {
 } as const
 
 export type AuditTrailEntryScalarFieldEnum = (typeof AuditTrailEntryScalarFieldEnum)[keyof typeof AuditTrailEntryScalarFieldEnum]
+
+
+export const CycleCheckpointScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  stage: 'stage',
+  details: 'details',
+  cycleRunId: 'cycleRunId'
+} as const
+
+export type CycleCheckpointScalarFieldEnum = (typeof CycleCheckpointScalarFieldEnum)[keyof typeof CycleCheckpointScalarFieldEnum]
+
+
+export const DeadLetterDispatchScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  requeuedAt: 'requeuedAt',
+  dispatchJobId: 'dispatchJobId',
+  normalizationItemId: 'normalizationItemId',
+  endpointKey: 'endpointKey',
+  lastStatus: 'lastStatus',
+  lastError: 'lastError',
+  payloadMeta: 'payloadMeta'
+} as const
+
+export type DeadLetterDispatchScalarFieldEnum = (typeof DeadLetterDispatchScalarFieldEnum)[keyof typeof DeadLetterDispatchScalarFieldEnum]
 
 
 export const SortOrder = {

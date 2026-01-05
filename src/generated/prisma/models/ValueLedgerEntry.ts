@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model ValueLedgerEntry
@@ -37,6 +37,7 @@ export type ValueLedgerEntrySumAggregateOutputType = {
 export type ValueLedgerEntryMinAggregateOutputType = {
   id: string | null
   profileId: string | null
+  cycleRunId: string | null
   runId: string | null
   weight: number | null
   createdAt: Date | null
@@ -45,6 +46,7 @@ export type ValueLedgerEntryMinAggregateOutputType = {
 export type ValueLedgerEntryMaxAggregateOutputType = {
   id: string | null
   profileId: string | null
+  cycleRunId: string | null
   runId: string | null
   weight: number | null
   createdAt: Date | null
@@ -53,6 +55,7 @@ export type ValueLedgerEntryMaxAggregateOutputType = {
 export type ValueLedgerEntryCountAggregateOutputType = {
   id: number
   profileId: number
+  cycleRunId: number
   runId: number
   valueTags: number
   weight: number
@@ -73,6 +76,7 @@ export type ValueLedgerEntrySumAggregateInputType = {
 export type ValueLedgerEntryMinAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   runId?: true
   weight?: true
   createdAt?: true
@@ -81,6 +85,7 @@ export type ValueLedgerEntryMinAggregateInputType = {
 export type ValueLedgerEntryMaxAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   runId?: true
   weight?: true
   createdAt?: true
@@ -89,6 +94,7 @@ export type ValueLedgerEntryMaxAggregateInputType = {
 export type ValueLedgerEntryCountAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   runId?: true
   valueTags?: true
   weight?: true
@@ -186,6 +192,7 @@ export type ValueLedgerEntryGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type ValueLedgerEntryGroupByOutputType = {
   id: string
   profileId: string
+  cycleRunId: string | null
   runId: string | null
   valueTags: runtime.JsonValue
   weight: number
@@ -219,6 +226,7 @@ export type ValueLedgerEntryWhereInput = {
   NOT?: Prisma.ValueLedgerEntryWhereInput | Prisma.ValueLedgerEntryWhereInput[]
   id?: Prisma.StringFilter<"ValueLedgerEntry"> | string
   profileId?: Prisma.StringFilter<"ValueLedgerEntry"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"ValueLedgerEntry"> | string | null
   runId?: Prisma.StringNullableFilter<"ValueLedgerEntry"> | string | null
   valueTags?: Prisma.JsonFilter<"ValueLedgerEntry">
   weight?: Prisma.FloatFilter<"ValueLedgerEntry"> | number
@@ -229,6 +237,7 @@ export type ValueLedgerEntryWhereInput = {
 export type ValueLedgerEntryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   runId?: Prisma.SortOrderInput | Prisma.SortOrder
   valueTags?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -242,6 +251,7 @@ export type ValueLedgerEntryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ValueLedgerEntryWhereInput[]
   NOT?: Prisma.ValueLedgerEntryWhereInput | Prisma.ValueLedgerEntryWhereInput[]
   profileId?: Prisma.StringFilter<"ValueLedgerEntry"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"ValueLedgerEntry"> | string | null
   runId?: Prisma.StringNullableFilter<"ValueLedgerEntry"> | string | null
   valueTags?: Prisma.JsonFilter<"ValueLedgerEntry">
   weight?: Prisma.FloatFilter<"ValueLedgerEntry"> | number
@@ -252,6 +262,7 @@ export type ValueLedgerEntryWhereUniqueInput = Prisma.AtLeast<{
 export type ValueLedgerEntryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   runId?: Prisma.SortOrderInput | Prisma.SortOrder
   valueTags?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -270,6 +281,7 @@ export type ValueLedgerEntryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ValueLedgerEntryScalarWhereWithAggregatesInput | Prisma.ValueLedgerEntryScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ValueLedgerEntry"> | string
   profileId?: Prisma.StringWithAggregatesFilter<"ValueLedgerEntry"> | string
+  cycleRunId?: Prisma.StringNullableWithAggregatesFilter<"ValueLedgerEntry"> | string | null
   runId?: Prisma.StringNullableWithAggregatesFilter<"ValueLedgerEntry"> | string | null
   valueTags?: Prisma.JsonWithAggregatesFilter<"ValueLedgerEntry">
   weight?: Prisma.FloatWithAggregatesFilter<"ValueLedgerEntry"> | number
@@ -280,6 +292,7 @@ export type ValueLedgerEntryScalarWhereWithAggregatesInput = {
 export type ValueLedgerEntryCreateInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   runId?: string | null
   valueTags: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight: number
@@ -290,6 +303,7 @@ export type ValueLedgerEntryCreateInput = {
 export type ValueLedgerEntryUncheckedCreateInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   runId?: string | null
   valueTags: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight: number
@@ -300,6 +314,7 @@ export type ValueLedgerEntryUncheckedCreateInput = {
 export type ValueLedgerEntryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueTags?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -310,6 +325,7 @@ export type ValueLedgerEntryUpdateInput = {
 export type ValueLedgerEntryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueTags?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -320,6 +336,7 @@ export type ValueLedgerEntryUncheckedUpdateInput = {
 export type ValueLedgerEntryCreateManyInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   runId?: string | null
   valueTags: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight: number
@@ -330,6 +347,7 @@ export type ValueLedgerEntryCreateManyInput = {
 export type ValueLedgerEntryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueTags?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -340,6 +358,7 @@ export type ValueLedgerEntryUpdateManyMutationInput = {
 export type ValueLedgerEntryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueTags?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -350,6 +369,7 @@ export type ValueLedgerEntryUncheckedUpdateManyInput = {
 export type ValueLedgerEntryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   valueTags?: Prisma.SortOrder
   weight?: Prisma.SortOrder
@@ -364,6 +384,7 @@ export type ValueLedgerEntryAvgOrderByAggregateInput = {
 export type ValueLedgerEntryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -372,6 +393,7 @@ export type ValueLedgerEntryMaxOrderByAggregateInput = {
 export type ValueLedgerEntryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -386,6 +408,7 @@ export type ValueLedgerEntrySumOrderByAggregateInput = {
 export type ValueLedgerEntrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   runId?: boolean
   valueTags?: boolean
   weight?: boolean
@@ -396,6 +419,7 @@ export type ValueLedgerEntrySelect<ExtArgs extends runtime.Types.Extensions.Inte
 export type ValueLedgerEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   runId?: boolean
   valueTags?: boolean
   weight?: boolean
@@ -406,6 +430,7 @@ export type ValueLedgerEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Ty
 export type ValueLedgerEntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   runId?: boolean
   valueTags?: boolean
   weight?: boolean
@@ -416,6 +441,7 @@ export type ValueLedgerEntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
 export type ValueLedgerEntrySelectScalar = {
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   runId?: boolean
   valueTags?: boolean
   weight?: boolean
@@ -423,7 +449,7 @@ export type ValueLedgerEntrySelectScalar = {
   createdAt?: boolean
 }
 
-export type ValueLedgerEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "runId" | "valueTags" | "weight" | "metadata" | "createdAt", ExtArgs["result"]["valueLedgerEntry"]>
+export type ValueLedgerEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "cycleRunId" | "runId" | "valueTags" | "weight" | "metadata" | "createdAt", ExtArgs["result"]["valueLedgerEntry"]>
 
 export type $ValueLedgerEntryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ValueLedgerEntry"
@@ -431,6 +457,10 @@ export type $ValueLedgerEntryPayload<ExtArgs extends runtime.Types.Extensions.In
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     profileId: string
+    /**
+     * cycle_run_id the value tags were associated with (typically CycleRun.id)
+     */
+    cycleRunId: string | null
     runId: string | null
     valueTags: runtime.JsonValue
     weight: number
@@ -861,6 +891,7 @@ export interface Prisma__ValueLedgerEntryClient<T, Null = never, ExtArgs extends
 export interface ValueLedgerEntryFieldRefs {
   readonly id: Prisma.FieldRef<"ValueLedgerEntry", 'String'>
   readonly profileId: Prisma.FieldRef<"ValueLedgerEntry", 'String'>
+  readonly cycleRunId: Prisma.FieldRef<"ValueLedgerEntry", 'String'>
   readonly runId: Prisma.FieldRef<"ValueLedgerEntry", 'String'>
   readonly valueTags: Prisma.FieldRef<"ValueLedgerEntry", 'Json'>
   readonly weight: Prisma.FieldRef<"ValueLedgerEntry", 'Float'>

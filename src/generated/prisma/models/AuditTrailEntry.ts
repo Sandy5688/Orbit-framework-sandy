@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model AuditTrailEntry
@@ -26,6 +26,7 @@ export type AggregateAuditTrailEntry = {
 
 export type AuditTrailEntryMinAggregateOutputType = {
   id: string | null
+  cycleRunId: string | null
   namespace: string | null
   actor: string | null
   action: string | null
@@ -34,6 +35,7 @@ export type AuditTrailEntryMinAggregateOutputType = {
 
 export type AuditTrailEntryMaxAggregateOutputType = {
   id: string | null
+  cycleRunId: string | null
   namespace: string | null
   actor: string | null
   action: string | null
@@ -42,6 +44,7 @@ export type AuditTrailEntryMaxAggregateOutputType = {
 
 export type AuditTrailEntryCountAggregateOutputType = {
   id: number
+  cycleRunId: number
   namespace: number
   actor: number
   action: number
@@ -53,6 +56,7 @@ export type AuditTrailEntryCountAggregateOutputType = {
 
 export type AuditTrailEntryMinAggregateInputType = {
   id?: true
+  cycleRunId?: true
   namespace?: true
   actor?: true
   action?: true
@@ -61,6 +65,7 @@ export type AuditTrailEntryMinAggregateInputType = {
 
 export type AuditTrailEntryMaxAggregateInputType = {
   id?: true
+  cycleRunId?: true
   namespace?: true
   actor?: true
   action?: true
@@ -69,6 +74,7 @@ export type AuditTrailEntryMaxAggregateInputType = {
 
 export type AuditTrailEntryCountAggregateInputType = {
   id?: true
+  cycleRunId?: true
   namespace?: true
   actor?: true
   action?: true
@@ -151,6 +157,7 @@ export type AuditTrailEntryGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type AuditTrailEntryGroupByOutputType = {
   id: string
+  cycleRunId: string | null
   namespace: string | null
   actor: string | null
   action: string
@@ -181,6 +188,7 @@ export type AuditTrailEntryWhereInput = {
   OR?: Prisma.AuditTrailEntryWhereInput[]
   NOT?: Prisma.AuditTrailEntryWhereInput | Prisma.AuditTrailEntryWhereInput[]
   id?: Prisma.StringFilter<"AuditTrailEntry"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"AuditTrailEntry"> | string | null
   namespace?: Prisma.StringNullableFilter<"AuditTrailEntry"> | string | null
   actor?: Prisma.StringNullableFilter<"AuditTrailEntry"> | string | null
   action?: Prisma.StringFilter<"AuditTrailEntry"> | string
@@ -190,6 +198,7 @@ export type AuditTrailEntryWhereInput = {
 
 export type AuditTrailEntryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   namespace?: Prisma.SortOrderInput | Prisma.SortOrder
   actor?: Prisma.SortOrderInput | Prisma.SortOrder
   action?: Prisma.SortOrder
@@ -202,6 +211,7 @@ export type AuditTrailEntryWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AuditTrailEntryWhereInput | Prisma.AuditTrailEntryWhereInput[]
   OR?: Prisma.AuditTrailEntryWhereInput[]
   NOT?: Prisma.AuditTrailEntryWhereInput | Prisma.AuditTrailEntryWhereInput[]
+  cycleRunId?: Prisma.StringNullableFilter<"AuditTrailEntry"> | string | null
   namespace?: Prisma.StringNullableFilter<"AuditTrailEntry"> | string | null
   actor?: Prisma.StringNullableFilter<"AuditTrailEntry"> | string | null
   action?: Prisma.StringFilter<"AuditTrailEntry"> | string
@@ -211,6 +221,7 @@ export type AuditTrailEntryWhereUniqueInput = Prisma.AtLeast<{
 
 export type AuditTrailEntryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   namespace?: Prisma.SortOrderInput | Prisma.SortOrder
   actor?: Prisma.SortOrderInput | Prisma.SortOrder
   action?: Prisma.SortOrder
@@ -226,6 +237,7 @@ export type AuditTrailEntryScalarWhereWithAggregatesInput = {
   OR?: Prisma.AuditTrailEntryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AuditTrailEntryScalarWhereWithAggregatesInput | Prisma.AuditTrailEntryScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"AuditTrailEntry"> | string
+  cycleRunId?: Prisma.StringNullableWithAggregatesFilter<"AuditTrailEntry"> | string | null
   namespace?: Prisma.StringNullableWithAggregatesFilter<"AuditTrailEntry"> | string | null
   actor?: Prisma.StringNullableWithAggregatesFilter<"AuditTrailEntry"> | string | null
   action?: Prisma.StringWithAggregatesFilter<"AuditTrailEntry"> | string
@@ -235,6 +247,7 @@ export type AuditTrailEntryScalarWhereWithAggregatesInput = {
 
 export type AuditTrailEntryCreateInput = {
   id?: string
+  cycleRunId?: string | null
   namespace?: string | null
   actor?: string | null
   action: string
@@ -244,6 +257,7 @@ export type AuditTrailEntryCreateInput = {
 
 export type AuditTrailEntryUncheckedCreateInput = {
   id?: string
+  cycleRunId?: string | null
   namespace?: string | null
   actor?: string | null
   action: string
@@ -253,6 +267,7 @@ export type AuditTrailEntryUncheckedCreateInput = {
 
 export type AuditTrailEntryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   action?: Prisma.StringFieldUpdateOperationsInput | string
@@ -262,6 +277,7 @@ export type AuditTrailEntryUpdateInput = {
 
 export type AuditTrailEntryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   action?: Prisma.StringFieldUpdateOperationsInput | string
@@ -271,6 +287,7 @@ export type AuditTrailEntryUncheckedUpdateInput = {
 
 export type AuditTrailEntryCreateManyInput = {
   id?: string
+  cycleRunId?: string | null
   namespace?: string | null
   actor?: string | null
   action: string
@@ -280,6 +297,7 @@ export type AuditTrailEntryCreateManyInput = {
 
 export type AuditTrailEntryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   action?: Prisma.StringFieldUpdateOperationsInput | string
@@ -289,6 +307,7 @@ export type AuditTrailEntryUpdateManyMutationInput = {
 
 export type AuditTrailEntryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   action?: Prisma.StringFieldUpdateOperationsInput | string
@@ -298,6 +317,7 @@ export type AuditTrailEntryUncheckedUpdateManyInput = {
 
 export type AuditTrailEntryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   namespace?: Prisma.SortOrder
   actor?: Prisma.SortOrder
   action?: Prisma.SortOrder
@@ -307,6 +327,7 @@ export type AuditTrailEntryCountOrderByAggregateInput = {
 
 export type AuditTrailEntryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   namespace?: Prisma.SortOrder
   actor?: Prisma.SortOrder
   action?: Prisma.SortOrder
@@ -315,6 +336,7 @@ export type AuditTrailEntryMaxOrderByAggregateInput = {
 
 export type AuditTrailEntryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   namespace?: Prisma.SortOrder
   actor?: Prisma.SortOrder
   action?: Prisma.SortOrder
@@ -325,6 +347,7 @@ export type AuditTrailEntryMinOrderByAggregateInput = {
 
 export type AuditTrailEntrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  cycleRunId?: boolean
   namespace?: boolean
   actor?: boolean
   action?: boolean
@@ -334,6 +357,7 @@ export type AuditTrailEntrySelect<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type AuditTrailEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  cycleRunId?: boolean
   namespace?: boolean
   actor?: boolean
   action?: boolean
@@ -343,6 +367,7 @@ export type AuditTrailEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 
 export type AuditTrailEntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  cycleRunId?: boolean
   namespace?: boolean
   actor?: boolean
   action?: boolean
@@ -352,6 +377,7 @@ export type AuditTrailEntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 
 export type AuditTrailEntrySelectScalar = {
   id?: boolean
+  cycleRunId?: boolean
   namespace?: boolean
   actor?: boolean
   action?: boolean
@@ -359,13 +385,14 @@ export type AuditTrailEntrySelectScalar = {
   createdAt?: boolean
 }
 
-export type AuditTrailEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "namespace" | "actor" | "action" | "details" | "createdAt", ExtArgs["result"]["auditTrailEntry"]>
+export type AuditTrailEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cycleRunId" | "namespace" | "actor" | "action" | "details" | "createdAt", ExtArgs["result"]["auditTrailEntry"]>
 
 export type $AuditTrailEntryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AuditTrailEntry"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    cycleRunId: string | null
     namespace: string | null
     actor: string | null
     action: string
@@ -795,6 +822,7 @@ export interface Prisma__AuditTrailEntryClient<T, Null = never, ExtArgs extends 
  */
 export interface AuditTrailEntryFieldRefs {
   readonly id: Prisma.FieldRef<"AuditTrailEntry", 'String'>
+  readonly cycleRunId: Prisma.FieldRef<"AuditTrailEntry", 'String'>
   readonly namespace: Prisma.FieldRef<"AuditTrailEntry", 'String'>
   readonly actor: Prisma.FieldRef<"AuditTrailEntry", 'String'>
   readonly action: Prisma.FieldRef<"AuditTrailEntry", 'String'>

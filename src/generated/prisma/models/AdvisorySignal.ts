@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model AdvisorySignal
@@ -37,6 +37,7 @@ export type AdvisorySignalSumAggregateOutputType = {
 export type AdvisorySignalMinAggregateOutputType = {
   id: string | null
   profileId: string | null
+  cycleRunId: string | null
   signal: string | null
   confidence: number | null
   recommendation: string | null
@@ -46,6 +47,7 @@ export type AdvisorySignalMinAggregateOutputType = {
 export type AdvisorySignalMaxAggregateOutputType = {
   id: string | null
   profileId: string | null
+  cycleRunId: string | null
   signal: string | null
   confidence: number | null
   recommendation: string | null
@@ -55,6 +57,7 @@ export type AdvisorySignalMaxAggregateOutputType = {
 export type AdvisorySignalCountAggregateOutputType = {
   id: number
   profileId: number
+  cycleRunId: number
   signal: number
   confidence: number
   recommendation: number
@@ -74,6 +77,7 @@ export type AdvisorySignalSumAggregateInputType = {
 export type AdvisorySignalMinAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   signal?: true
   confidence?: true
   recommendation?: true
@@ -83,6 +87,7 @@ export type AdvisorySignalMinAggregateInputType = {
 export type AdvisorySignalMaxAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   signal?: true
   confidence?: true
   recommendation?: true
@@ -92,6 +97,7 @@ export type AdvisorySignalMaxAggregateInputType = {
 export type AdvisorySignalCountAggregateInputType = {
   id?: true
   profileId?: true
+  cycleRunId?: true
   signal?: true
   confidence?: true
   recommendation?: true
@@ -188,6 +194,7 @@ export type AdvisorySignalGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type AdvisorySignalGroupByOutputType = {
   id: string
   profileId: string
+  cycleRunId: string | null
   signal: string
   confidence: number
   recommendation: string
@@ -220,6 +227,7 @@ export type AdvisorySignalWhereInput = {
   NOT?: Prisma.AdvisorySignalWhereInput | Prisma.AdvisorySignalWhereInput[]
   id?: Prisma.StringFilter<"AdvisorySignal"> | string
   profileId?: Prisma.StringFilter<"AdvisorySignal"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"AdvisorySignal"> | string | null
   signal?: Prisma.StringFilter<"AdvisorySignal"> | string
   confidence?: Prisma.FloatFilter<"AdvisorySignal"> | number
   recommendation?: Prisma.StringFilter<"AdvisorySignal"> | string
@@ -229,6 +237,7 @@ export type AdvisorySignalWhereInput = {
 export type AdvisorySignalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   signal?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   recommendation?: Prisma.SortOrder
@@ -241,6 +250,7 @@ export type AdvisorySignalWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AdvisorySignalWhereInput[]
   NOT?: Prisma.AdvisorySignalWhereInput | Prisma.AdvisorySignalWhereInput[]
   profileId?: Prisma.StringFilter<"AdvisorySignal"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"AdvisorySignal"> | string | null
   signal?: Prisma.StringFilter<"AdvisorySignal"> | string
   confidence?: Prisma.FloatFilter<"AdvisorySignal"> | number
   recommendation?: Prisma.StringFilter<"AdvisorySignal"> | string
@@ -250,6 +260,7 @@ export type AdvisorySignalWhereUniqueInput = Prisma.AtLeast<{
 export type AdvisorySignalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   signal?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   recommendation?: Prisma.SortOrder
@@ -267,6 +278,7 @@ export type AdvisorySignalScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AdvisorySignalScalarWhereWithAggregatesInput | Prisma.AdvisorySignalScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"AdvisorySignal"> | string
   profileId?: Prisma.StringWithAggregatesFilter<"AdvisorySignal"> | string
+  cycleRunId?: Prisma.StringNullableWithAggregatesFilter<"AdvisorySignal"> | string | null
   signal?: Prisma.StringWithAggregatesFilter<"AdvisorySignal"> | string
   confidence?: Prisma.FloatWithAggregatesFilter<"AdvisorySignal"> | number
   recommendation?: Prisma.StringWithAggregatesFilter<"AdvisorySignal"> | string
@@ -276,6 +288,7 @@ export type AdvisorySignalScalarWhereWithAggregatesInput = {
 export type AdvisorySignalCreateInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   signal: string
   confidence: number
   recommendation: string
@@ -285,6 +298,7 @@ export type AdvisorySignalCreateInput = {
 export type AdvisorySignalUncheckedCreateInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   signal: string
   confidence: number
   recommendation: string
@@ -294,6 +308,7 @@ export type AdvisorySignalUncheckedCreateInput = {
 export type AdvisorySignalUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signal?: Prisma.StringFieldUpdateOperationsInput | string
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   recommendation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -303,6 +318,7 @@ export type AdvisorySignalUpdateInput = {
 export type AdvisorySignalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signal?: Prisma.StringFieldUpdateOperationsInput | string
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   recommendation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -312,6 +328,7 @@ export type AdvisorySignalUncheckedUpdateInput = {
 export type AdvisorySignalCreateManyInput = {
   id?: string
   profileId: string
+  cycleRunId?: string | null
   signal: string
   confidence: number
   recommendation: string
@@ -321,6 +338,7 @@ export type AdvisorySignalCreateManyInput = {
 export type AdvisorySignalUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signal?: Prisma.StringFieldUpdateOperationsInput | string
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   recommendation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -330,6 +348,7 @@ export type AdvisorySignalUpdateManyMutationInput = {
 export type AdvisorySignalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signal?: Prisma.StringFieldUpdateOperationsInput | string
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   recommendation?: Prisma.StringFieldUpdateOperationsInput | string
@@ -339,6 +358,7 @@ export type AdvisorySignalUncheckedUpdateManyInput = {
 export type AdvisorySignalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   signal?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   recommendation?: Prisma.SortOrder
@@ -352,6 +372,7 @@ export type AdvisorySignalAvgOrderByAggregateInput = {
 export type AdvisorySignalMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   signal?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   recommendation?: Prisma.SortOrder
@@ -361,6 +382,7 @@ export type AdvisorySignalMaxOrderByAggregateInput = {
 export type AdvisorySignalMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   signal?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   recommendation?: Prisma.SortOrder
@@ -376,6 +398,7 @@ export type AdvisorySignalSumOrderByAggregateInput = {
 export type AdvisorySignalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signal?: boolean
   confidence?: boolean
   recommendation?: boolean
@@ -385,6 +408,7 @@ export type AdvisorySignalSelect<ExtArgs extends runtime.Types.Extensions.Intern
 export type AdvisorySignalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signal?: boolean
   confidence?: boolean
   recommendation?: boolean
@@ -394,6 +418,7 @@ export type AdvisorySignalSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 export type AdvisorySignalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signal?: boolean
   confidence?: boolean
   recommendation?: boolean
@@ -403,13 +428,14 @@ export type AdvisorySignalSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 export type AdvisorySignalSelectScalar = {
   id?: boolean
   profileId?: boolean
+  cycleRunId?: boolean
   signal?: boolean
   confidence?: boolean
   recommendation?: boolean
   createdAt?: boolean
 }
 
-export type AdvisorySignalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "signal" | "confidence" | "recommendation" | "createdAt", ExtArgs["result"]["advisorySignal"]>
+export type AdvisorySignalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "cycleRunId" | "signal" | "confidence" | "recommendation" | "createdAt", ExtArgs["result"]["advisorySignal"]>
 
 export type $AdvisorySignalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AdvisorySignal"
@@ -417,6 +443,7 @@ export type $AdvisorySignalPayload<ExtArgs extends runtime.Types.Extensions.Inte
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     profileId: string
+    cycleRunId: string | null
     signal: string
     confidence: number
     recommendation: string
@@ -846,6 +873,7 @@ export interface Prisma__AdvisorySignalClient<T, Null = never, ExtArgs extends r
 export interface AdvisorySignalFieldRefs {
   readonly id: Prisma.FieldRef<"AdvisorySignal", 'String'>
   readonly profileId: Prisma.FieldRef<"AdvisorySignal", 'String'>
+  readonly cycleRunId: Prisma.FieldRef<"AdvisorySignal", 'String'>
   readonly signal: Prisma.FieldRef<"AdvisorySignal", 'String'>
   readonly confidence: Prisma.FieldRef<"AdvisorySignal", 'Float'>
   readonly recommendation: Prisma.FieldRef<"AdvisorySignal", 'String'>

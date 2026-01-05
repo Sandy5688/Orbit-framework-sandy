@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model CycleRun
@@ -180,6 +180,7 @@ export type CycleRunWhereInput = {
   contextJson?: Prisma.JsonNullableFilter<"CycleRun">
   initiations?: Prisma.InitiationListRelationFilter
   records?: Prisma.ExecutionRecordListRelationFilter
+  checkpoints?: Prisma.CycleCheckpointListRelationFilter
 }
 
 export type CycleRunOrderByWithRelationInput = {
@@ -190,6 +191,7 @@ export type CycleRunOrderByWithRelationInput = {
   contextJson?: Prisma.SortOrderInput | Prisma.SortOrder
   initiations?: Prisma.InitiationOrderByRelationAggregateInput
   records?: Prisma.ExecutionRecordOrderByRelationAggregateInput
+  checkpoints?: Prisma.CycleCheckpointOrderByRelationAggregateInput
 }
 
 export type CycleRunWhereUniqueInput = Prisma.AtLeast<{
@@ -203,6 +205,7 @@ export type CycleRunWhereUniqueInput = Prisma.AtLeast<{
   contextJson?: Prisma.JsonNullableFilter<"CycleRun">
   initiations?: Prisma.InitiationListRelationFilter
   records?: Prisma.ExecutionRecordListRelationFilter
+  checkpoints?: Prisma.CycleCheckpointListRelationFilter
 }, "id">
 
 export type CycleRunOrderByWithAggregationInput = {
@@ -235,6 +238,7 @@ export type CycleRunCreateInput = {
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationCreateNestedManyWithoutCycleRunInput
   records?: Prisma.ExecutionRecordCreateNestedManyWithoutCycleRunInput
+  checkpoints?: Prisma.CycleCheckpointCreateNestedManyWithoutCycleRunInput
 }
 
 export type CycleRunUncheckedCreateInput = {
@@ -245,6 +249,7 @@ export type CycleRunUncheckedCreateInput = {
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationUncheckedCreateNestedManyWithoutCycleRunInput
   records?: Prisma.ExecutionRecordUncheckedCreateNestedManyWithoutCycleRunInput
+  checkpoints?: Prisma.CycleCheckpointUncheckedCreateNestedManyWithoutCycleRunInput
 }
 
 export type CycleRunUpdateInput = {
@@ -255,6 +260,7 @@ export type CycleRunUpdateInput = {
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationUpdateManyWithoutCycleRunNestedInput
   records?: Prisma.ExecutionRecordUpdateManyWithoutCycleRunNestedInput
+  checkpoints?: Prisma.CycleCheckpointUpdateManyWithoutCycleRunNestedInput
 }
 
 export type CycleRunUncheckedUpdateInput = {
@@ -265,6 +271,7 @@ export type CycleRunUncheckedUpdateInput = {
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationUncheckedUpdateManyWithoutCycleRunNestedInput
   records?: Prisma.ExecutionRecordUncheckedUpdateManyWithoutCycleRunNestedInput
+  checkpoints?: Prisma.CycleCheckpointUncheckedUpdateManyWithoutCycleRunNestedInput
 }
 
 export type CycleRunCreateManyInput = {
@@ -318,6 +325,11 @@ export type CycleRunNullableScalarRelationFilter = {
   isNot?: Prisma.CycleRunWhereInput | null
 }
 
+export type CycleRunScalarRelationFilter = {
+  is?: Prisma.CycleRunWhereInput
+  isNot?: Prisma.CycleRunWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -362,6 +374,20 @@ export type CycleRunUpdateOneWithoutRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CycleRunUpdateToOneWithWhereWithoutRecordsInput, Prisma.CycleRunUpdateWithoutRecordsInput>, Prisma.CycleRunUncheckedUpdateWithoutRecordsInput>
 }
 
+export type CycleRunCreateNestedOneWithoutCheckpointsInput = {
+  create?: Prisma.XOR<Prisma.CycleRunCreateWithoutCheckpointsInput, Prisma.CycleRunUncheckedCreateWithoutCheckpointsInput>
+  connectOrCreate?: Prisma.CycleRunCreateOrConnectWithoutCheckpointsInput
+  connect?: Prisma.CycleRunWhereUniqueInput
+}
+
+export type CycleRunUpdateOneRequiredWithoutCheckpointsNestedInput = {
+  create?: Prisma.XOR<Prisma.CycleRunCreateWithoutCheckpointsInput, Prisma.CycleRunUncheckedCreateWithoutCheckpointsInput>
+  connectOrCreate?: Prisma.CycleRunCreateOrConnectWithoutCheckpointsInput
+  upsert?: Prisma.CycleRunUpsertWithoutCheckpointsInput
+  connect?: Prisma.CycleRunWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CycleRunUpdateToOneWithWhereWithoutCheckpointsInput, Prisma.CycleRunUpdateWithoutCheckpointsInput>, Prisma.CycleRunUncheckedUpdateWithoutCheckpointsInput>
+}
+
 export type CycleRunCreateWithoutInitiationsInput = {
   id?: string
   startedAt?: Date | string
@@ -369,6 +395,7 @@ export type CycleRunCreateWithoutInitiationsInput = {
   status: string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   records?: Prisma.ExecutionRecordCreateNestedManyWithoutCycleRunInput
+  checkpoints?: Prisma.CycleCheckpointCreateNestedManyWithoutCycleRunInput
 }
 
 export type CycleRunUncheckedCreateWithoutInitiationsInput = {
@@ -378,6 +405,7 @@ export type CycleRunUncheckedCreateWithoutInitiationsInput = {
   status: string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   records?: Prisma.ExecutionRecordUncheckedCreateNestedManyWithoutCycleRunInput
+  checkpoints?: Prisma.CycleCheckpointUncheckedCreateNestedManyWithoutCycleRunInput
 }
 
 export type CycleRunCreateOrConnectWithoutInitiationsInput = {
@@ -403,6 +431,7 @@ export type CycleRunUpdateWithoutInitiationsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   records?: Prisma.ExecutionRecordUpdateManyWithoutCycleRunNestedInput
+  checkpoints?: Prisma.CycleCheckpointUpdateManyWithoutCycleRunNestedInput
 }
 
 export type CycleRunUncheckedUpdateWithoutInitiationsInput = {
@@ -412,6 +441,7 @@ export type CycleRunUncheckedUpdateWithoutInitiationsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   records?: Prisma.ExecutionRecordUncheckedUpdateManyWithoutCycleRunNestedInput
+  checkpoints?: Prisma.CycleCheckpointUncheckedUpdateManyWithoutCycleRunNestedInput
 }
 
 export type CycleRunCreateWithoutRecordsInput = {
@@ -421,6 +451,7 @@ export type CycleRunCreateWithoutRecordsInput = {
   status: string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationCreateNestedManyWithoutCycleRunInput
+  checkpoints?: Prisma.CycleCheckpointCreateNestedManyWithoutCycleRunInput
 }
 
 export type CycleRunUncheckedCreateWithoutRecordsInput = {
@@ -430,6 +461,7 @@ export type CycleRunUncheckedCreateWithoutRecordsInput = {
   status: string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationUncheckedCreateNestedManyWithoutCycleRunInput
+  checkpoints?: Prisma.CycleCheckpointUncheckedCreateNestedManyWithoutCycleRunInput
 }
 
 export type CycleRunCreateOrConnectWithoutRecordsInput = {
@@ -455,6 +487,7 @@ export type CycleRunUpdateWithoutRecordsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationUpdateManyWithoutCycleRunNestedInput
+  checkpoints?: Prisma.CycleCheckpointUpdateManyWithoutCycleRunNestedInput
 }
 
 export type CycleRunUncheckedUpdateWithoutRecordsInput = {
@@ -464,6 +497,63 @@ export type CycleRunUncheckedUpdateWithoutRecordsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   initiations?: Prisma.InitiationUncheckedUpdateManyWithoutCycleRunNestedInput
+  checkpoints?: Prisma.CycleCheckpointUncheckedUpdateManyWithoutCycleRunNestedInput
+}
+
+export type CycleRunCreateWithoutCheckpointsInput = {
+  id?: string
+  startedAt?: Date | string
+  finishedAt?: Date | string | null
+  status: string
+  contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  initiations?: Prisma.InitiationCreateNestedManyWithoutCycleRunInput
+  records?: Prisma.ExecutionRecordCreateNestedManyWithoutCycleRunInput
+}
+
+export type CycleRunUncheckedCreateWithoutCheckpointsInput = {
+  id?: string
+  startedAt?: Date | string
+  finishedAt?: Date | string | null
+  status: string
+  contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  initiations?: Prisma.InitiationUncheckedCreateNestedManyWithoutCycleRunInput
+  records?: Prisma.ExecutionRecordUncheckedCreateNestedManyWithoutCycleRunInput
+}
+
+export type CycleRunCreateOrConnectWithoutCheckpointsInput = {
+  where: Prisma.CycleRunWhereUniqueInput
+  create: Prisma.XOR<Prisma.CycleRunCreateWithoutCheckpointsInput, Prisma.CycleRunUncheckedCreateWithoutCheckpointsInput>
+}
+
+export type CycleRunUpsertWithoutCheckpointsInput = {
+  update: Prisma.XOR<Prisma.CycleRunUpdateWithoutCheckpointsInput, Prisma.CycleRunUncheckedUpdateWithoutCheckpointsInput>
+  create: Prisma.XOR<Prisma.CycleRunCreateWithoutCheckpointsInput, Prisma.CycleRunUncheckedCreateWithoutCheckpointsInput>
+  where?: Prisma.CycleRunWhereInput
+}
+
+export type CycleRunUpdateToOneWithWhereWithoutCheckpointsInput = {
+  where?: Prisma.CycleRunWhereInput
+  data: Prisma.XOR<Prisma.CycleRunUpdateWithoutCheckpointsInput, Prisma.CycleRunUncheckedUpdateWithoutCheckpointsInput>
+}
+
+export type CycleRunUpdateWithoutCheckpointsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  initiations?: Prisma.InitiationUpdateManyWithoutCycleRunNestedInput
+  records?: Prisma.ExecutionRecordUpdateManyWithoutCycleRunNestedInput
+}
+
+export type CycleRunUncheckedUpdateWithoutCheckpointsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  contextJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  initiations?: Prisma.InitiationUncheckedUpdateManyWithoutCycleRunNestedInput
+  records?: Prisma.ExecutionRecordUncheckedUpdateManyWithoutCycleRunNestedInput
 }
 
 
@@ -474,11 +564,13 @@ export type CycleRunUncheckedUpdateWithoutRecordsInput = {
 export type CycleRunCountOutputType = {
   initiations: number
   records: number
+  checkpoints: number
 }
 
 export type CycleRunCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   initiations?: boolean | CycleRunCountOutputTypeCountInitiationsArgs
   records?: boolean | CycleRunCountOutputTypeCountRecordsArgs
+  checkpoints?: boolean | CycleRunCountOutputTypeCountCheckpointsArgs
 }
 
 /**
@@ -505,6 +597,13 @@ export type CycleRunCountOutputTypeCountRecordsArgs<ExtArgs extends runtime.Type
   where?: Prisma.ExecutionRecordWhereInput
 }
 
+/**
+ * CycleRunCountOutputType without action
+ */
+export type CycleRunCountOutputTypeCountCheckpointsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CycleCheckpointWhereInput
+}
+
 
 export type CycleRunSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -514,6 +613,7 @@ export type CycleRunSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   contextJson?: boolean
   initiations?: boolean | Prisma.CycleRun$initiationsArgs<ExtArgs>
   records?: boolean | Prisma.CycleRun$recordsArgs<ExtArgs>
+  checkpoints?: boolean | Prisma.CycleRun$checkpointsArgs<ExtArgs>
   _count?: boolean | Prisma.CycleRunCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cycleRun"]>
 
@@ -545,6 +645,7 @@ export type CycleRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type CycleRunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   initiations?: boolean | Prisma.CycleRun$initiationsArgs<ExtArgs>
   records?: boolean | Prisma.CycleRun$recordsArgs<ExtArgs>
+  checkpoints?: boolean | Prisma.CycleRun$checkpointsArgs<ExtArgs>
   _count?: boolean | Prisma.CycleRunCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CycleRunIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -555,6 +656,7 @@ export type $CycleRunPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     initiations: Prisma.$InitiationPayload<ExtArgs>[]
     records: Prisma.$ExecutionRecordPayload<ExtArgs>[]
+    checkpoints: Prisma.$CycleCheckpointPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -958,6 +1060,7 @@ export interface Prisma__CycleRunClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   initiations<T extends Prisma.CycleRun$initiationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CycleRun$initiationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InitiationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   records<T extends Prisma.CycleRun$recordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CycleRun$recordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExecutionRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  checkpoints<T extends Prisma.CycleRun$checkpointsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CycleRun$checkpointsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CycleCheckpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1425,6 +1528,30 @@ export type CycleRun$recordsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ExecutionRecordScalarFieldEnum | Prisma.ExecutionRecordScalarFieldEnum[]
+}
+
+/**
+ * CycleRun.checkpoints
+ */
+export type CycleRun$checkpointsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CycleCheckpoint
+   */
+  select?: Prisma.CycleCheckpointSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CycleCheckpoint
+   */
+  omit?: Prisma.CycleCheckpointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CycleCheckpointInclude<ExtArgs> | null
+  where?: Prisma.CycleCheckpointWhereInput
+  orderBy?: Prisma.CycleCheckpointOrderByWithRelationInput | Prisma.CycleCheckpointOrderByWithRelationInput[]
+  cursor?: Prisma.CycleCheckpointWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CycleCheckpointScalarFieldEnum | Prisma.CycleCheckpointScalarFieldEnum[]
 }
 
 /**

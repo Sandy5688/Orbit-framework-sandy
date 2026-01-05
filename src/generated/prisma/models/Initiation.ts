@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Initiation
@@ -38,8 +38,9 @@ export type InitiationMinAggregateOutputType = {
   id: string | null
   label: string | null
   weight: number | null
-  dedupeHash: string | null
+  initiationHash: string | null
   createdAt: Date | null
+  runProfileId: string | null
   cycleRunId: string | null
 }
 
@@ -47,8 +48,9 @@ export type InitiationMaxAggregateOutputType = {
   id: string | null
   label: string | null
   weight: number | null
-  dedupeHash: string | null
+  initiationHash: string | null
   createdAt: Date | null
+  runProfileId: string | null
   cycleRunId: string | null
 }
 
@@ -57,8 +59,9 @@ export type InitiationCountAggregateOutputType = {
   label: number
   weight: number
   metadata: number
-  dedupeHash: number
+  initiationHash: number
   createdAt: number
+  runProfileId: number
   cycleRunId: number
   _all: number
 }
@@ -76,8 +79,9 @@ export type InitiationMinAggregateInputType = {
   id?: true
   label?: true
   weight?: true
-  dedupeHash?: true
+  initiationHash?: true
   createdAt?: true
+  runProfileId?: true
   cycleRunId?: true
 }
 
@@ -85,8 +89,9 @@ export type InitiationMaxAggregateInputType = {
   id?: true
   label?: true
   weight?: true
-  dedupeHash?: true
+  initiationHash?: true
   createdAt?: true
+  runProfileId?: true
   cycleRunId?: true
 }
 
@@ -95,8 +100,9 @@ export type InitiationCountAggregateInputType = {
   label?: true
   weight?: true
   metadata?: true
-  dedupeHash?: true
+  initiationHash?: true
   createdAt?: true
+  runProfileId?: true
   cycleRunId?: true
   _all?: true
 }
@@ -192,8 +198,9 @@ export type InitiationGroupByOutputType = {
   label: string
   weight: number
   metadata: runtime.JsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt: Date
+  runProfileId: string | null
   cycleRunId: string | null
   _count: InitiationCountAggregateOutputType | null
   _avg: InitiationAvgAggregateOutputType | null
@@ -225,8 +232,9 @@ export type InitiationWhereInput = {
   label?: Prisma.StringFilter<"Initiation"> | string
   weight?: Prisma.FloatFilter<"Initiation"> | number
   metadata?: Prisma.JsonFilter<"Initiation">
-  dedupeHash?: Prisma.StringFilter<"Initiation"> | string
+  initiationHash?: Prisma.StringFilter<"Initiation"> | string
   createdAt?: Prisma.DateTimeFilter<"Initiation"> | Date | string
+  runProfileId?: Prisma.StringNullableFilter<"Initiation"> | string | null
   cycleRunId?: Prisma.StringNullableFilter<"Initiation"> | string | null
   cycleRun?: Prisma.XOR<Prisma.CycleRunNullableScalarRelationFilter, Prisma.CycleRunWhereInput> | null
   transformations?: Prisma.TransformationListRelationFilter
@@ -237,8 +245,9 @@ export type InitiationOrderByWithRelationInput = {
   label?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
-  dedupeHash?: Prisma.SortOrder
+  initiationHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  runProfileId?: Prisma.SortOrderInput | Prisma.SortOrder
   cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   cycleRun?: Prisma.CycleRunOrderByWithRelationInput
   transformations?: Prisma.TransformationOrderByRelationAggregateInput
@@ -246,26 +255,29 @@ export type InitiationOrderByWithRelationInput = {
 
 export type InitiationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  initiationHash_runProfileId?: Prisma.InitiationInitiationHashRunProfileIdCompoundUniqueInput
   AND?: Prisma.InitiationWhereInput | Prisma.InitiationWhereInput[]
   OR?: Prisma.InitiationWhereInput[]
   NOT?: Prisma.InitiationWhereInput | Prisma.InitiationWhereInput[]
   label?: Prisma.StringFilter<"Initiation"> | string
   weight?: Prisma.FloatFilter<"Initiation"> | number
   metadata?: Prisma.JsonFilter<"Initiation">
-  dedupeHash?: Prisma.StringFilter<"Initiation"> | string
+  initiationHash?: Prisma.StringFilter<"Initiation"> | string
   createdAt?: Prisma.DateTimeFilter<"Initiation"> | Date | string
+  runProfileId?: Prisma.StringNullableFilter<"Initiation"> | string | null
   cycleRunId?: Prisma.StringNullableFilter<"Initiation"> | string | null
   cycleRun?: Prisma.XOR<Prisma.CycleRunNullableScalarRelationFilter, Prisma.CycleRunWhereInput> | null
   transformations?: Prisma.TransformationListRelationFilter
-}, "id">
+}, "id" | "initiationHash_runProfileId">
 
 export type InitiationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
-  dedupeHash?: Prisma.SortOrder
+  initiationHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  runProfileId?: Prisma.SortOrderInput | Prisma.SortOrder
   cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.InitiationCountOrderByAggregateInput
   _avg?: Prisma.InitiationAvgOrderByAggregateInput
@@ -282,8 +294,9 @@ export type InitiationScalarWhereWithAggregatesInput = {
   label?: Prisma.StringWithAggregatesFilter<"Initiation"> | string
   weight?: Prisma.FloatWithAggregatesFilter<"Initiation"> | number
   metadata?: Prisma.JsonWithAggregatesFilter<"Initiation">
-  dedupeHash?: Prisma.StringWithAggregatesFilter<"Initiation"> | string
+  initiationHash?: Prisma.StringWithAggregatesFilter<"Initiation"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Initiation"> | Date | string
+  runProfileId?: Prisma.StringNullableWithAggregatesFilter<"Initiation"> | string | null
   cycleRunId?: Prisma.StringNullableWithAggregatesFilter<"Initiation"> | string | null
 }
 
@@ -292,8 +305,9 @@ export type InitiationCreateInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   cycleRun?: Prisma.CycleRunCreateNestedOneWithoutInitiationsInput
   transformations?: Prisma.TransformationCreateNestedManyWithoutInitiationInput
 }
@@ -303,8 +317,9 @@ export type InitiationUncheckedCreateInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   cycleRunId?: string | null
   transformations?: Prisma.TransformationUncheckedCreateNestedManyWithoutInitiationInput
 }
@@ -314,8 +329,9 @@ export type InitiationUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cycleRun?: Prisma.CycleRunUpdateOneWithoutInitiationsNestedInput
   transformations?: Prisma.TransformationUpdateManyWithoutInitiationNestedInput
 }
@@ -325,8 +341,9 @@ export type InitiationUncheckedUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transformations?: Prisma.TransformationUncheckedUpdateManyWithoutInitiationNestedInput
 }
@@ -336,8 +353,9 @@ export type InitiationCreateManyInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   cycleRunId?: string | null
 }
 
@@ -346,8 +364,9 @@ export type InitiationUpdateManyMutationInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InitiationUncheckedUpdateManyInput = {
@@ -355,8 +374,9 @@ export type InitiationUncheckedUpdateManyInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -370,13 +390,19 @@ export type InitiationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type InitiationInitiationHashRunProfileIdCompoundUniqueInput = {
+  initiationHash: string
+  runProfileId: string
+}
+
 export type InitiationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
-  dedupeHash?: Prisma.SortOrder
+  initiationHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  runProfileId?: Prisma.SortOrder
   cycleRunId?: Prisma.SortOrder
 }
 
@@ -388,8 +414,9 @@ export type InitiationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  dedupeHash?: Prisma.SortOrder
+  initiationHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  runProfileId?: Prisma.SortOrder
   cycleRunId?: Prisma.SortOrder
 }
 
@@ -397,8 +424,9 @@ export type InitiationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  dedupeHash?: Prisma.SortOrder
+  initiationHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  runProfileId?: Prisma.SortOrder
   cycleRunId?: Prisma.SortOrder
 }
 
@@ -486,8 +514,9 @@ export type InitiationCreateWithoutCycleRunInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   transformations?: Prisma.TransformationCreateNestedManyWithoutInitiationInput
 }
 
@@ -496,8 +525,9 @@ export type InitiationUncheckedCreateWithoutCycleRunInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   transformations?: Prisma.TransformationUncheckedCreateNestedManyWithoutInitiationInput
 }
 
@@ -535,8 +565,9 @@ export type InitiationScalarWhereInput = {
   label?: Prisma.StringFilter<"Initiation"> | string
   weight?: Prisma.FloatFilter<"Initiation"> | number
   metadata?: Prisma.JsonFilter<"Initiation">
-  dedupeHash?: Prisma.StringFilter<"Initiation"> | string
+  initiationHash?: Prisma.StringFilter<"Initiation"> | string
   createdAt?: Prisma.DateTimeFilter<"Initiation"> | Date | string
+  runProfileId?: Prisma.StringNullableFilter<"Initiation"> | string | null
   cycleRunId?: Prisma.StringNullableFilter<"Initiation"> | string | null
 }
 
@@ -545,8 +576,9 @@ export type InitiationCreateWithoutTransformationsInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   cycleRun?: Prisma.CycleRunCreateNestedOneWithoutInitiationsInput
 }
 
@@ -555,8 +587,9 @@ export type InitiationUncheckedCreateWithoutTransformationsInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
   cycleRunId?: string | null
 }
 
@@ -581,8 +614,9 @@ export type InitiationUpdateWithoutTransformationsInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cycleRun?: Prisma.CycleRunUpdateOneWithoutInitiationsNestedInput
 }
 
@@ -591,8 +625,9 @@ export type InitiationUncheckedUpdateWithoutTransformationsInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -601,8 +636,9 @@ export type InitiationCreateManyCycleRunInput = {
   label: string
   weight: number
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash: string
+  initiationHash: string
   createdAt?: Date | string
+  runProfileId?: string | null
 }
 
 export type InitiationUpdateWithoutCycleRunInput = {
@@ -610,8 +646,9 @@ export type InitiationUpdateWithoutCycleRunInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transformations?: Prisma.TransformationUpdateManyWithoutInitiationNestedInput
 }
 
@@ -620,8 +657,9 @@ export type InitiationUncheckedUpdateWithoutCycleRunInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transformations?: Prisma.TransformationUncheckedUpdateManyWithoutInitiationNestedInput
 }
 
@@ -630,8 +668,9 @@ export type InitiationUncheckedUpdateManyWithoutCycleRunInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  dedupeHash?: Prisma.StringFieldUpdateOperationsInput | string
+  initiationHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -670,8 +709,9 @@ export type InitiationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   label?: boolean
   weight?: boolean
   metadata?: boolean
-  dedupeHash?: boolean
+  initiationHash?: boolean
   createdAt?: boolean
+  runProfileId?: boolean
   cycleRunId?: boolean
   cycleRun?: boolean | Prisma.Initiation$cycleRunArgs<ExtArgs>
   transformations?: boolean | Prisma.Initiation$transformationsArgs<ExtArgs>
@@ -683,8 +723,9 @@ export type InitiationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   label?: boolean
   weight?: boolean
   metadata?: boolean
-  dedupeHash?: boolean
+  initiationHash?: boolean
   createdAt?: boolean
+  runProfileId?: boolean
   cycleRunId?: boolean
   cycleRun?: boolean | Prisma.Initiation$cycleRunArgs<ExtArgs>
 }, ExtArgs["result"]["initiation"]>
@@ -694,8 +735,9 @@ export type InitiationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   label?: boolean
   weight?: boolean
   metadata?: boolean
-  dedupeHash?: boolean
+  initiationHash?: boolean
   createdAt?: boolean
+  runProfileId?: boolean
   cycleRunId?: boolean
   cycleRun?: boolean | Prisma.Initiation$cycleRunArgs<ExtArgs>
 }, ExtArgs["result"]["initiation"]>
@@ -705,12 +747,13 @@ export type InitiationSelectScalar = {
   label?: boolean
   weight?: boolean
   metadata?: boolean
-  dedupeHash?: boolean
+  initiationHash?: boolean
   createdAt?: boolean
+  runProfileId?: boolean
   cycleRunId?: boolean
 }
 
-export type InitiationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "weight" | "metadata" | "dedupeHash" | "createdAt" | "cycleRunId", ExtArgs["result"]["initiation"]>
+export type InitiationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "weight" | "metadata" | "initiationHash" | "createdAt" | "runProfileId" | "cycleRunId", ExtArgs["result"]["initiation"]>
 export type InitiationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cycleRun?: boolean | Prisma.Initiation$cycleRunArgs<ExtArgs>
   transformations?: boolean | Prisma.Initiation$transformationsArgs<ExtArgs>
@@ -734,8 +777,15 @@ export type $InitiationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     label: string
     weight: number
     metadata: runtime.JsonValue
-    dedupeHash: string
+    /**
+     * Deterministic hash for idempotent execution per run profile / context.
+     */
+    initiationHash: string
     createdAt: Date
+    /**
+     * Run profile identifier from config that produced this initiation (if any).
+     */
+    runProfileId: string | null
     cycleRunId: string | null
   }, ExtArgs["result"]["initiation"]>
   composites: {}
@@ -1166,8 +1216,9 @@ export interface InitiationFieldRefs {
   readonly label: Prisma.FieldRef<"Initiation", 'String'>
   readonly weight: Prisma.FieldRef<"Initiation", 'Float'>
   readonly metadata: Prisma.FieldRef<"Initiation", 'Json'>
-  readonly dedupeHash: Prisma.FieldRef<"Initiation", 'String'>
+  readonly initiationHash: Prisma.FieldRef<"Initiation", 'String'>
   readonly createdAt: Prisma.FieldRef<"Initiation", 'DateTime'>
+  readonly runProfileId: Prisma.FieldRef<"Initiation", 'String'>
   readonly cycleRunId: Prisma.FieldRef<"Initiation", 'String'>
 }
     

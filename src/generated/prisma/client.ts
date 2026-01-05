@@ -12,16 +12,14 @@
 
 import * as process from 'node:process'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
-globalThis['__dirname'] = path.dirname(fileURLToPath(import.meta.url))
 
 import * as runtime from "@prisma/client/runtime/client"
-import * as $Enums from "./enums.ts"
-import * as $Class from "./internal/class.ts"
-import * as Prisma from "./internal/prismaNamespace.ts"
+import * as $Enums from "./enums"
+import * as $Class from "./internal/class"
+import * as Prisma from "./internal/prismaNamespace"
 
-export * as $Enums from './enums.ts'
-export * from "./enums.ts"
+export * as $Enums from './enums'
+export * from "./enums"
 /**
  * ## Prisma Client
  * 
@@ -80,6 +78,12 @@ export type ExecutionRecord = Prisma.ExecutionRecordModel
  */
 export type TelemetryEvent = Prisma.TelemetryEventModel
 /**
+ * Model TelemetryArchive
+ * Cold archive table for telemetry events that have been pruned from the hot
+ * TelemetryEvent table.
+ */
+export type TelemetryArchive = Prisma.TelemetryArchiveModel
+/**
  * Model AdvisorySignal
  * 
  */
@@ -104,3 +108,13 @@ export type GovernanceSetting = Prisma.GovernanceSettingModel
  * 
  */
 export type AuditTrailEntry = Prisma.AuditTrailEntryModel
+/**
+ * Model CycleCheckpoint
+ * Append-only cycle checkpoint log used for crash-resilient recovery.
+ */
+export type CycleCheckpoint = Prisma.CycleCheckpointModel
+/**
+ * Model DeadLetterDispatch
+ * Dead-letter queue entry for dispatch jobs that exceeded retry thresholds.
+ */
+export type DeadLetterDispatch = Prisma.DeadLetterDispatchModel

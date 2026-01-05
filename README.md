@@ -110,36 +110,226 @@ This project is a modular, phased orchestration framework for unattended executi
 
 ## Configuration & Environment
 
-Environment variables expected at runtime:
+Environment variables expected at runtime. See `.env.example` for a complete template with descriptions.
 
-- `DATABASE_URL` – PostgreSQL connection string.
+**Required:**
+- `DATABASE_URL` – PostgreSQL connection string; must be set and reachable.
+
+**Optional (with sensible defaults):**
 - `PORT` – HTTP port (default: `3000`).
-- `ORBIT_GLOBAL_PAUSE` – `true`/`false`.
-- `ORBIT_CRON_SCHEDULE` – cron expression for Phase-1 cycles (default: `0 0,12 * * *`).
-- `ORBIT_RUN_PROFILE_CRON_SCHEDULE` – optional cron for run profile orchestration.
-- `ORBIT_PHASE4_ENABLED` – `true`/`false`, Phase-4 hard flag (default: `false`).
+- `NODE_ENV` – deployment environment (default: `development`).
+- `ORBIT_GLOBAL_PAUSE` – `true`/`false` to pause all cycles (default: `false`).
+- `ORBIT_CRON_SCHEDULE` – cron expression for Phase-1 cycles (default: `0 0,12 * * *` = twice daily).
+- `ORBIT_RUN_PROFILE_CRON_SCHEDULE` – optional cron for run profile orchestration (default: empty/disabled).
+- `ORBIT_PHASE4_ENABLED` – `true`/`false`, Phase-4 feature flag (default: `false`).
 - `ORBIT_PHASE4_ALLOW_MUTATION` – `true`/`false`, second safety gate for Phase-4 mutations (default: `false`).
-- `ORBIT_DISPATCH_ENDPOINTS` – JSON array of endpoint configs, e.g.:
-  - `[{"key":"default-endpoint","url":"https://example.com/webhook","method":"POST","token":"example-token"}]`
-- `ORBIT_MAX_DISPATCH_RETRIES` – maximum number of attempts per dispatch job before it is moved to the dead-letter queue (default: `3`).
-- `ORBIT_TELEMETRY_RETENTION_DAYS` – number of days to retain hot telemetry (default: `30`).
-- `ORBIT_TELEMETRY_COLD_ARCHIVE_ENABLED` – `true`/`false`, whether to archive telemetry to `TelemetryArchive` before pruning.
+- `ORBIT_DISPATCH_ENDPOINTS` – JSON array of endpoint configurations (see Aurora Integration below).
+- `ORBIT_MAX_DISPATCH_RETRIES` – max retry attempts before DLQ (default: `3`).
+- `ORBIT_TELEMETRY_RETENTION_DAYS` – hot telemetry retention in days (default: `30`).
+- `ORBIT_TELEMETRY_COLD_ARCHIVE_ENABLED` – archive to `TelemetryArchive` before pruning (default: `false`).
 
-You can use these to create a `.env` file alongside `package.json`. A typical development configuration is:
+### Setup
 
-```text
-DATABASE_URL=postgresql://user:password@localhost:5432/orbit
-PORT=3000
-ORBIT_GLOBAL_PAUSE=false
-ORBIT_CRON_SCHEDULE=0 0,12 * * *
-ORBIT_RUN_PROFILE_CRON_SCHEDULE=
-ORBIT_PHASE4_ENABLED=false
-ORBIT_PHASE4_ALLOW_MUTATION=false
-ORBIT_DISPATCH_ENDPOINTS=[{"key":"default-endpoint","url":"https://example.com/webhook","method":"POST","token":"example-token"}]
-ORBIT_MAX_DISPATCH_RETRIES=3
-ORBIT_TELEMETRY_RETENTION_DAYS=30
-ORBIT_TELEMETRY_COLD_ARCHIVE_ENABLED=false
+1. **Copy `.env.example` to `.env`:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Update `.env` with your environment details:**
+   ```text
+   DATABASE_URL=postgresql://user:password@localhost:5432/orbit
+   PORT=3000
+   ORBIT_DISPATCH_ENDPOINTS=[{"key":"default-endpoint","url":"https://aurora.example.com/webhook","method":"POST","token":"your-secret-token"}]
+   ```
+
+## Aurora Integration
+
+**Orbit is a Phase-2 control plane that triggers Aurora and handles orchestration.**
+
+### How It Works
+
+1. **Trigger Point:** Orbit scheduler or API endpoint (`/cycles/trigger`, `/run-profiles/trigger`) initiates a cycle.
+2. **Execution:** Orbit runs Phase-1 orchestration (initiation → transformations → normalization → dispatch).
+3. **Dispatch to Aurora:** Opaque payloads are dispatched via HTTP POST to the Aurora webhook URL.
+4. **Aurora Processing:** Aurora receives the payload, generates content (via LLM, voice, video), and publishes to distribution targets (Metricool, Buffer, etc.).
+
+### Configuration
+
+Set `ORBIT_DISPATCH_ENDPOINTS` to point to your Aurora webhook:
+
+```json
+[
+  {
+    "key": "default-endpoint",
+    "url": "https://aurora.example.com/dispatch",
+    "method": "POST",
+    "token": "secret-aurora-webhook-token"
+  }
+]
 ```
+
+**Key Points:**
+- **Opaque Payloads:** Orbit does NOT read or interpret job logic; payloads are opaque.
+- **No Payload Modification:** Orbit passes payloads through unchanged to Aurora.
+- **No Scheduler Control:** Orbit does not modify Aurora's internal scheduling or job logic.
+- **Webhook Delivery:** Orbit sends HTTP POST with `Authorization: Bearer {token}` header.
+- **Retry Handling:** Failed dispatch jobs are retried up to `ORBIT_MAX_DISPATCH_RETRIES` before being moved to the dead-letter queue.
+- **Context Passed:** Profile ID, run profile ID, and namespace flow as metadata (opaque to Aurora).
+
+### Example Workflow
+
+```
+1. Orbit scheduler fires (e.g., "0 0,12 * * *" = 12:00 UTC daily)
+   ↓
+2. Orbit runs Phase-1 cycle for each enabled run profile
+   ↓
+3. Cycle generates initiation → transforms payload → normalizes → enqueues dispatch job
+   ↓
+4. Dispatch job POSTs to Aurora webhook URL with bearer token
+   ↓
+5. Aurora receives opaque payload, generates content, publishes
+   ↓
+6. Aurora may respond with 200 OK (dispatch marked "delivered") or error (retried)
+   ↓
+7. After max retries, failed jobs move to dead-letter queue (DeadLetterDispatch table)
+```
+
+### Monitoring Aurora Integration
+
+- **Cycle Status:** `GET /cycles/recent` → view recent cycle runs and their status.
+- **Dispatch Status:** `GET /metrics` → check dispatch job counts and dead-letter queue size.
+- **Telemetry:** Orbit emits `delivery_confirmed` events when Aurora webhook succeeds.
+- **Audit Trail:** All dispatch failures and governance actions logged to `AuditTrailEntry`.
+
+---
+
+## Running Locally
+
+1. Install dependencies:
+   - `npm install`
+2. Generate Prisma client:
+   - `npx prisma generate`
+3. Ensure PostgreSQL is running and `DATABASE_URL` is set.
+4. Build and run:
+   - `npm run build`
+   - `npm start`
+5. Or run in dev mode:
+   - `npm run dev`
+
+## Production Deployment
+
+### Prerequisites
+
+- Node.js 20+
+- PostgreSQL 12+ (shared with Aurora, if applicable)
+- Network access to Aurora webhook URL
+- PM2 installed globally: `npm install -g pm2`
+
+### Graceful Shutdown
+
+Orbit Framework handles graceful shutdown on `SIGTERM` and `SIGINT` signals:
+
+1. **HTTP server stops accepting new requests** immediately upon signal.
+2. **Active cycles are drained** — the process waits up to 30 seconds for in-flight cycles to complete.
+3. **Process exits cleanly** — no data loss or incomplete cycles.
+
+This allows orchestrators (systemd, Kubernetes, Docker, PM2) to safely restart or upgrade Orbit without interrupting active work.
+
+### PM2 Setup (Recommended for VPS/Linux)
+
+1. **Start with PM2:**
+   ```bash
+   pm2 start ecosystem.config.js
+   ```
+
+2. **Save PM2 configuration:**
+   ```bash
+   pm2 save
+   ```
+
+3. **Set up auto-start on system reboot:**
+   ```bash
+   pm2 startup
+   ```
+
+4. **Verify the service is running:**
+   ```bash
+   pm2 status
+   pm2 logs orbit-framework --follow
+   ```
+
+5. **Monitor and manage:**
+   ```bash
+   pm2 monit              # Real-time monitoring
+   pm2 restart orbit-framework  # Restart the service
+   pm2 stop orbit-framework     # Stop the service
+   ```
+
+**PM2 Configuration** (`ecosystem.config.js`):
+- **Instances:** 1 (single fork mode to maintain state)
+- **Auto-restart:** Enabled with exponential backoff
+- **Graceful shutdown:** 5-second timeout for `SIGTERM` before `SIGKILL`
+- **Logging:** Structured JSON logs to `logs/orbit-out.log` and `logs/orbit-error.log`
+
+### Docker Deployment
+
+Build and run the container:
+
+```bash
+docker build -t orbit-framework .
+docker run -p 3000:3000 \
+  --env-file .env \
+  --restart unless-stopped \
+  orbit-framework
+```
+
+**Key Flags:**
+- `--restart unless-stopped` — auto-restart on crash, but respects manual stops
+- `--env-file .env` — load environment from `.env` file
+- `-p 3000:3000` — map HTTP port
+
+Ensure the container can reach your PostgreSQL instance defined by `DATABASE_URL`.
+
+### Systemd Service (Alternative to PM2)
+
+Create `/etc/systemd/system/orbit-framework.service`:
+
+```ini
+[Unit]
+Description=Orbit Framework (Aurora Phase-2 Control Plane)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=orbit
+WorkingDirectory=/opt/orbit-framework
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=orbit-framework
+EnvironmentFile=/opt/orbit-framework/.env
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start:
+```bash
+systemctl daemon-reload
+systemctl enable orbit-framework
+systemctl start orbit-framework
+systemctl status orbit-framework
+```
+
+View logs:
+```bash
+journalctl -u orbit-framework -f
+```
+
+---
 
 ## Production Safeguards & Patch Notes
 
@@ -157,19 +347,8 @@ ORBIT_TELEMETRY_COLD_ARCHIVE_ENABLED=false
   - Telemetry is pruned according to `ORBIT_TELEMETRY_RETENTION_DAYS`, with optional cold archive to `TelemetryArchive` when enabled.
 - **Phase-4 hard guards**
   - Phase-4 autonomy requires both `ORBIT_PHASE4_ENABLED` and `ORBIT_PHASE4_ALLOW_MUTATION` to be explicitly set; otherwise, Phase-4 logs and no-ops.
-
-## Running Locally
-
-1. Install dependencies:
-   - `npm install`
-2. Generate Prisma client:
-   - `npx prisma generate`
-3. Ensure PostgreSQL is running and `DATABASE_URL` is set.
-4. Build and run:
-   - `npm run build`
-   - `npm start`
-5. Or run in dev mode:
-   - `npm run dev`
+- **Graceful shutdown**
+  - `SIGTERM`/`SIGINT` handlers drain active cycles before terminating; integrates seamlessly with PM2, systemd, and container orchestrators.
 
 ## Docker
 

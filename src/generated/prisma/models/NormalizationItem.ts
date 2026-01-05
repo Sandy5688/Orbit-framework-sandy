@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model NormalizationItem
@@ -193,6 +193,7 @@ export type NormalizationItemWhereInput = {
   batch?: Prisma.XOR<Prisma.NormalizationBatchNullableScalarRelationFilter, Prisma.NormalizationBatchWhereInput> | null
   transformation?: Prisma.XOR<Prisma.TransformationNullableScalarRelationFilter, Prisma.TransformationWhereInput> | null
   dispatchJobs?: Prisma.DispatchJobListRelationFilter
+  deadLetterDispatches?: Prisma.DeadLetterDispatchListRelationFilter
 }
 
 export type NormalizationItemOrderByWithRelationInput = {
@@ -205,6 +206,7 @@ export type NormalizationItemOrderByWithRelationInput = {
   batch?: Prisma.NormalizationBatchOrderByWithRelationInput
   transformation?: Prisma.TransformationOrderByWithRelationInput
   dispatchJobs?: Prisma.DispatchJobOrderByRelationAggregateInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchOrderByRelationAggregateInput
 }
 
 export type NormalizationItemWhereUniqueInput = Prisma.AtLeast<{
@@ -220,6 +222,7 @@ export type NormalizationItemWhereUniqueInput = Prisma.AtLeast<{
   batch?: Prisma.XOR<Prisma.NormalizationBatchNullableScalarRelationFilter, Prisma.NormalizationBatchWhereInput> | null
   transformation?: Prisma.XOR<Prisma.TransformationNullableScalarRelationFilter, Prisma.TransformationWhereInput> | null
   dispatchJobs?: Prisma.DispatchJobListRelationFilter
+  deadLetterDispatches?: Prisma.DeadLetterDispatchListRelationFilter
 }, "id">
 
 export type NormalizationItemOrderByWithAggregationInput = {
@@ -254,6 +257,7 @@ export type NormalizationItemCreateInput = {
   batch?: Prisma.NormalizationBatchCreateNestedOneWithoutItemsInput
   transformation?: Prisma.TransformationCreateNestedOneWithoutNormalizationItemsInput
   dispatchJobs?: Prisma.DispatchJobCreateNestedManyWithoutNormalizationItemInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemUncheckedCreateInput = {
@@ -264,6 +268,7 @@ export type NormalizationItemUncheckedCreateInput = {
   batchId?: string | null
   transformationId?: string | null
   dispatchJobs?: Prisma.DispatchJobUncheckedCreateNestedManyWithoutNormalizationItemInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemUpdateInput = {
@@ -274,6 +279,7 @@ export type NormalizationItemUpdateInput = {
   batch?: Prisma.NormalizationBatchUpdateOneWithoutItemsNestedInput
   transformation?: Prisma.TransformationUpdateOneWithoutNormalizationItemsNestedInput
   dispatchJobs?: Prisma.DispatchJobUpdateManyWithoutNormalizationItemNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemUncheckedUpdateInput = {
@@ -284,6 +290,7 @@ export type NormalizationItemUncheckedUpdateInput = {
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transformationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dispatchJobs?: Prisma.DispatchJobUncheckedUpdateManyWithoutNormalizationItemNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemCreateManyInput = {
@@ -453,6 +460,22 @@ export type NormalizationItemUpdateOneWithoutDispatchJobsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.NormalizationItemUpdateToOneWithWhereWithoutDispatchJobsInput, Prisma.NormalizationItemUpdateWithoutDispatchJobsInput>, Prisma.NormalizationItemUncheckedUpdateWithoutDispatchJobsInput>
 }
 
+export type NormalizationItemCreateNestedOneWithoutDeadLetterDispatchesInput = {
+  create?: Prisma.XOR<Prisma.NormalizationItemCreateWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUncheckedCreateWithoutDeadLetterDispatchesInput>
+  connectOrCreate?: Prisma.NormalizationItemCreateOrConnectWithoutDeadLetterDispatchesInput
+  connect?: Prisma.NormalizationItemWhereUniqueInput
+}
+
+export type NormalizationItemUpdateOneWithoutDeadLetterDispatchesNestedInput = {
+  create?: Prisma.XOR<Prisma.NormalizationItemCreateWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUncheckedCreateWithoutDeadLetterDispatchesInput>
+  connectOrCreate?: Prisma.NormalizationItemCreateOrConnectWithoutDeadLetterDispatchesInput
+  upsert?: Prisma.NormalizationItemUpsertWithoutDeadLetterDispatchesInput
+  disconnect?: Prisma.NormalizationItemWhereInput | boolean
+  delete?: Prisma.NormalizationItemWhereInput | boolean
+  connect?: Prisma.NormalizationItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.NormalizationItemUpdateToOneWithWhereWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUpdateWithoutDeadLetterDispatchesInput>, Prisma.NormalizationItemUncheckedUpdateWithoutDeadLetterDispatchesInput>
+}
+
 export type NormalizationItemCreateWithoutTransformationInput = {
   id?: string
   status: string
@@ -460,6 +483,7 @@ export type NormalizationItemCreateWithoutTransformationInput = {
   createdAt?: Date | string
   batch?: Prisma.NormalizationBatchCreateNestedOneWithoutItemsInput
   dispatchJobs?: Prisma.DispatchJobCreateNestedManyWithoutNormalizationItemInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemUncheckedCreateWithoutTransformationInput = {
@@ -469,6 +493,7 @@ export type NormalizationItemUncheckedCreateWithoutTransformationInput = {
   createdAt?: Date | string
   batchId?: string | null
   dispatchJobs?: Prisma.DispatchJobUncheckedCreateNestedManyWithoutNormalizationItemInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemCreateOrConnectWithoutTransformationInput = {
@@ -516,6 +541,7 @@ export type NormalizationItemCreateWithoutBatchInput = {
   createdAt?: Date | string
   transformation?: Prisma.TransformationCreateNestedOneWithoutNormalizationItemsInput
   dispatchJobs?: Prisma.DispatchJobCreateNestedManyWithoutNormalizationItemInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemUncheckedCreateWithoutBatchInput = {
@@ -525,6 +551,7 @@ export type NormalizationItemUncheckedCreateWithoutBatchInput = {
   createdAt?: Date | string
   transformationId?: string | null
   dispatchJobs?: Prisma.DispatchJobUncheckedCreateNestedManyWithoutNormalizationItemInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemCreateOrConnectWithoutBatchInput = {
@@ -560,6 +587,7 @@ export type NormalizationItemCreateWithoutDispatchJobsInput = {
   createdAt?: Date | string
   batch?: Prisma.NormalizationBatchCreateNestedOneWithoutItemsInput
   transformation?: Prisma.TransformationCreateNestedOneWithoutNormalizationItemsInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemUncheckedCreateWithoutDispatchJobsInput = {
@@ -569,6 +597,7 @@ export type NormalizationItemUncheckedCreateWithoutDispatchJobsInput = {
   createdAt?: Date | string
   batchId?: string | null
   transformationId?: string | null
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedCreateNestedManyWithoutNormalizationItemInput
 }
 
 export type NormalizationItemCreateOrConnectWithoutDispatchJobsInput = {
@@ -594,6 +623,7 @@ export type NormalizationItemUpdateWithoutDispatchJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batch?: Prisma.NormalizationBatchUpdateOneWithoutItemsNestedInput
   transformation?: Prisma.TransformationUpdateOneWithoutNormalizationItemsNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemUncheckedUpdateWithoutDispatchJobsInput = {
@@ -603,6 +633,63 @@ export type NormalizationItemUncheckedUpdateWithoutDispatchJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transformationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedUpdateManyWithoutNormalizationItemNestedInput
+}
+
+export type NormalizationItemCreateWithoutDeadLetterDispatchesInput = {
+  id?: string
+  status: string
+  errorMessage?: string | null
+  createdAt?: Date | string
+  batch?: Prisma.NormalizationBatchCreateNestedOneWithoutItemsInput
+  transformation?: Prisma.TransformationCreateNestedOneWithoutNormalizationItemsInput
+  dispatchJobs?: Prisma.DispatchJobCreateNestedManyWithoutNormalizationItemInput
+}
+
+export type NormalizationItemUncheckedCreateWithoutDeadLetterDispatchesInput = {
+  id?: string
+  status: string
+  errorMessage?: string | null
+  createdAt?: Date | string
+  batchId?: string | null
+  transformationId?: string | null
+  dispatchJobs?: Prisma.DispatchJobUncheckedCreateNestedManyWithoutNormalizationItemInput
+}
+
+export type NormalizationItemCreateOrConnectWithoutDeadLetterDispatchesInput = {
+  where: Prisma.NormalizationItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.NormalizationItemCreateWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUncheckedCreateWithoutDeadLetterDispatchesInput>
+}
+
+export type NormalizationItemUpsertWithoutDeadLetterDispatchesInput = {
+  update: Prisma.XOR<Prisma.NormalizationItemUpdateWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUncheckedUpdateWithoutDeadLetterDispatchesInput>
+  create: Prisma.XOR<Prisma.NormalizationItemCreateWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUncheckedCreateWithoutDeadLetterDispatchesInput>
+  where?: Prisma.NormalizationItemWhereInput
+}
+
+export type NormalizationItemUpdateToOneWithWhereWithoutDeadLetterDispatchesInput = {
+  where?: Prisma.NormalizationItemWhereInput
+  data: Prisma.XOR<Prisma.NormalizationItemUpdateWithoutDeadLetterDispatchesInput, Prisma.NormalizationItemUncheckedUpdateWithoutDeadLetterDispatchesInput>
+}
+
+export type NormalizationItemUpdateWithoutDeadLetterDispatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  batch?: Prisma.NormalizationBatchUpdateOneWithoutItemsNestedInput
+  transformation?: Prisma.TransformationUpdateOneWithoutNormalizationItemsNestedInput
+  dispatchJobs?: Prisma.DispatchJobUpdateManyWithoutNormalizationItemNestedInput
+}
+
+export type NormalizationItemUncheckedUpdateWithoutDeadLetterDispatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transformationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dispatchJobs?: Prisma.DispatchJobUncheckedUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemCreateManyTransformationInput = {
@@ -620,6 +707,7 @@ export type NormalizationItemUpdateWithoutTransformationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batch?: Prisma.NormalizationBatchUpdateOneWithoutItemsNestedInput
   dispatchJobs?: Prisma.DispatchJobUpdateManyWithoutNormalizationItemNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemUncheckedUpdateWithoutTransformationInput = {
@@ -629,6 +717,7 @@ export type NormalizationItemUncheckedUpdateWithoutTransformationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   batchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dispatchJobs?: Prisma.DispatchJobUncheckedUpdateManyWithoutNormalizationItemNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemUncheckedUpdateManyWithoutTransformationInput = {
@@ -654,6 +743,7 @@ export type NormalizationItemUpdateWithoutBatchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transformation?: Prisma.TransformationUpdateOneWithoutNormalizationItemsNestedInput
   dispatchJobs?: Prisma.DispatchJobUpdateManyWithoutNormalizationItemNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemUncheckedUpdateWithoutBatchInput = {
@@ -663,6 +753,7 @@ export type NormalizationItemUncheckedUpdateWithoutBatchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transformationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dispatchJobs?: Prisma.DispatchJobUncheckedUpdateManyWithoutNormalizationItemNestedInput
+  deadLetterDispatches?: Prisma.DeadLetterDispatchUncheckedUpdateManyWithoutNormalizationItemNestedInput
 }
 
 export type NormalizationItemUncheckedUpdateManyWithoutBatchInput = {
@@ -680,10 +771,12 @@ export type NormalizationItemUncheckedUpdateManyWithoutBatchInput = {
 
 export type NormalizationItemCountOutputType = {
   dispatchJobs: number
+  deadLetterDispatches: number
 }
 
 export type NormalizationItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   dispatchJobs?: boolean | NormalizationItemCountOutputTypeCountDispatchJobsArgs
+  deadLetterDispatches?: boolean | NormalizationItemCountOutputTypeCountDeadLetterDispatchesArgs
 }
 
 /**
@@ -703,6 +796,13 @@ export type NormalizationItemCountOutputTypeCountDispatchJobsArgs<ExtArgs extend
   where?: Prisma.DispatchJobWhereInput
 }
 
+/**
+ * NormalizationItemCountOutputType without action
+ */
+export type NormalizationItemCountOutputTypeCountDeadLetterDispatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeadLetterDispatchWhereInput
+}
+
 
 export type NormalizationItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -714,6 +814,7 @@ export type NormalizationItemSelect<ExtArgs extends runtime.Types.Extensions.Int
   batch?: boolean | Prisma.NormalizationItem$batchArgs<ExtArgs>
   transformation?: boolean | Prisma.NormalizationItem$transformationArgs<ExtArgs>
   dispatchJobs?: boolean | Prisma.NormalizationItem$dispatchJobsArgs<ExtArgs>
+  deadLetterDispatches?: boolean | Prisma.NormalizationItem$deadLetterDispatchesArgs<ExtArgs>
   _count?: boolean | Prisma.NormalizationItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["normalizationItem"]>
 
@@ -753,6 +854,7 @@ export type NormalizationItemInclude<ExtArgs extends runtime.Types.Extensions.In
   batch?: boolean | Prisma.NormalizationItem$batchArgs<ExtArgs>
   transformation?: boolean | Prisma.NormalizationItem$transformationArgs<ExtArgs>
   dispatchJobs?: boolean | Prisma.NormalizationItem$dispatchJobsArgs<ExtArgs>
+  deadLetterDispatches?: boolean | Prisma.NormalizationItem$deadLetterDispatchesArgs<ExtArgs>
   _count?: boolean | Prisma.NormalizationItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type NormalizationItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -770,6 +872,7 @@ export type $NormalizationItemPayload<ExtArgs extends runtime.Types.Extensions.I
     batch: Prisma.$NormalizationBatchPayload<ExtArgs> | null
     transformation: Prisma.$TransformationPayload<ExtArgs> | null
     dispatchJobs: Prisma.$DispatchJobPayload<ExtArgs>[]
+    deadLetterDispatches: Prisma.$DeadLetterDispatchPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1175,6 +1278,7 @@ export interface Prisma__NormalizationItemClient<T, Null = never, ExtArgs extend
   batch<T extends Prisma.NormalizationItem$batchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NormalizationItem$batchArgs<ExtArgs>>): Prisma.Prisma__NormalizationBatchClient<runtime.Types.Result.GetResult<Prisma.$NormalizationBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   transformation<T extends Prisma.NormalizationItem$transformationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NormalizationItem$transformationArgs<ExtArgs>>): Prisma.Prisma__TransformationClient<runtime.Types.Result.GetResult<Prisma.$TransformationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   dispatchJobs<T extends Prisma.NormalizationItem$dispatchJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NormalizationItem$dispatchJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DispatchJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  deadLetterDispatches<T extends Prisma.NormalizationItem$deadLetterDispatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NormalizationItem$deadLetterDispatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeadLetterDispatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1665,6 +1769,30 @@ export type NormalizationItem$dispatchJobsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.DispatchJobScalarFieldEnum | Prisma.DispatchJobScalarFieldEnum[]
+}
+
+/**
+ * NormalizationItem.deadLetterDispatches
+ */
+export type NormalizationItem$deadLetterDispatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeadLetterDispatch
+   */
+  select?: Prisma.DeadLetterDispatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeadLetterDispatch
+   */
+  omit?: Prisma.DeadLetterDispatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeadLetterDispatchInclude<ExtArgs> | null
+  where?: Prisma.DeadLetterDispatchWhereInput
+  orderBy?: Prisma.DeadLetterDispatchOrderByWithRelationInput | Prisma.DeadLetterDispatchOrderByWithRelationInput[]
+  cursor?: Prisma.DeadLetterDispatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeadLetterDispatchScalarFieldEnum | Prisma.DeadLetterDispatchScalarFieldEnum[]
 }
 
 /**

@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model DispatchJob
@@ -39,6 +39,9 @@ export type DispatchJobMinAggregateOutputType = {
   endpointKey: string | null
   status: string | null
   attempt: number | null
+  endpointUrl: string | null
+  endpointMethod: string | null
+  tokenSnapshot: string | null
   lastError: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -50,6 +53,9 @@ export type DispatchJobMaxAggregateOutputType = {
   endpointKey: string | null
   status: string | null
   attempt: number | null
+  endpointUrl: string | null
+  endpointMethod: string | null
+  tokenSnapshot: string | null
   lastError: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -61,6 +67,9 @@ export type DispatchJobCountAggregateOutputType = {
   endpointKey: number
   status: number
   attempt: number
+  endpointUrl: number
+  endpointMethod: number
+  tokenSnapshot: number
   lastError: number
   receiptJson: number
   createdAt: number
@@ -83,6 +92,9 @@ export type DispatchJobMinAggregateInputType = {
   endpointKey?: true
   status?: true
   attempt?: true
+  endpointUrl?: true
+  endpointMethod?: true
+  tokenSnapshot?: true
   lastError?: true
   createdAt?: true
   updatedAt?: true
@@ -94,6 +106,9 @@ export type DispatchJobMaxAggregateInputType = {
   endpointKey?: true
   status?: true
   attempt?: true
+  endpointUrl?: true
+  endpointMethod?: true
+  tokenSnapshot?: true
   lastError?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +120,9 @@ export type DispatchJobCountAggregateInputType = {
   endpointKey?: true
   status?: true
   attempt?: true
+  endpointUrl?: true
+  endpointMethod?: true
+  tokenSnapshot?: true
   lastError?: true
   receiptJson?: true
   createdAt?: true
@@ -204,6 +222,9 @@ export type DispatchJobGroupByOutputType = {
   endpointKey: string
   status: string
   attempt: number
+  endpointUrl: string | null
+  endpointMethod: string | null
+  tokenSnapshot: string | null
   lastError: string | null
   receiptJson: runtime.JsonValue | null
   createdAt: Date
@@ -239,12 +260,16 @@ export type DispatchJobWhereInput = {
   endpointKey?: Prisma.StringFilter<"DispatchJob"> | string
   status?: Prisma.StringFilter<"DispatchJob"> | string
   attempt?: Prisma.IntFilter<"DispatchJob"> | number
+  endpointUrl?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
+  endpointMethod?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
+  tokenSnapshot?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   lastError?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   receiptJson?: Prisma.JsonNullableFilter<"DispatchJob">
   createdAt?: Prisma.DateTimeFilter<"DispatchJob"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DispatchJob"> | Date | string
   normalizationItemId?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   normalizationItem?: Prisma.XOR<Prisma.NormalizationItemNullableScalarRelationFilter, Prisma.NormalizationItemWhereInput> | null
+  deadLetterEntries?: Prisma.DeadLetterDispatchListRelationFilter
 }
 
 export type DispatchJobOrderByWithRelationInput = {
@@ -252,12 +277,16 @@ export type DispatchJobOrderByWithRelationInput = {
   endpointKey?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
+  endpointUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  endpointMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  tokenSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
   receiptJson?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   normalizationItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   normalizationItem?: Prisma.NormalizationItemOrderByWithRelationInput
+  deadLetterEntries?: Prisma.DeadLetterDispatchOrderByRelationAggregateInput
 }
 
 export type DispatchJobWhereUniqueInput = Prisma.AtLeast<{
@@ -268,12 +297,16 @@ export type DispatchJobWhereUniqueInput = Prisma.AtLeast<{
   endpointKey?: Prisma.StringFilter<"DispatchJob"> | string
   status?: Prisma.StringFilter<"DispatchJob"> | string
   attempt?: Prisma.IntFilter<"DispatchJob"> | number
+  endpointUrl?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
+  endpointMethod?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
+  tokenSnapshot?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   lastError?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   receiptJson?: Prisma.JsonNullableFilter<"DispatchJob">
   createdAt?: Prisma.DateTimeFilter<"DispatchJob"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DispatchJob"> | Date | string
   normalizationItemId?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   normalizationItem?: Prisma.XOR<Prisma.NormalizationItemNullableScalarRelationFilter, Prisma.NormalizationItemWhereInput> | null
+  deadLetterEntries?: Prisma.DeadLetterDispatchListRelationFilter
 }, "id">
 
 export type DispatchJobOrderByWithAggregationInput = {
@@ -281,6 +314,9 @@ export type DispatchJobOrderByWithAggregationInput = {
   endpointKey?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
+  endpointUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  endpointMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  tokenSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
   receiptJson?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -301,6 +337,9 @@ export type DispatchJobScalarWhereWithAggregatesInput = {
   endpointKey?: Prisma.StringWithAggregatesFilter<"DispatchJob"> | string
   status?: Prisma.StringWithAggregatesFilter<"DispatchJob"> | string
   attempt?: Prisma.IntWithAggregatesFilter<"DispatchJob"> | number
+  endpointUrl?: Prisma.StringNullableWithAggregatesFilter<"DispatchJob"> | string | null
+  endpointMethod?: Prisma.StringNullableWithAggregatesFilter<"DispatchJob"> | string | null
+  tokenSnapshot?: Prisma.StringNullableWithAggregatesFilter<"DispatchJob"> | string | null
   lastError?: Prisma.StringNullableWithAggregatesFilter<"DispatchJob"> | string | null
   receiptJson?: Prisma.JsonNullableWithAggregatesFilter<"DispatchJob">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DispatchJob"> | Date | string
@@ -313,11 +352,15 @@ export type DispatchJobCreateInput = {
   endpointKey: string
   status: string
   attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
   lastError?: string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   normalizationItem?: Prisma.NormalizationItemCreateNestedOneWithoutDispatchJobsInput
+  deadLetterEntries?: Prisma.DeadLetterDispatchCreateNestedManyWithoutDispatchJobInput
 }
 
 export type DispatchJobUncheckedCreateInput = {
@@ -325,11 +368,15 @@ export type DispatchJobUncheckedCreateInput = {
   endpointKey: string
   status: string
   attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
   lastError?: string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   normalizationItemId?: string | null
+  deadLetterEntries?: Prisma.DeadLetterDispatchUncheckedCreateNestedManyWithoutDispatchJobInput
 }
 
 export type DispatchJobUpdateInput = {
@@ -337,11 +384,15 @@ export type DispatchJobUpdateInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   normalizationItem?: Prisma.NormalizationItemUpdateOneWithoutDispatchJobsNestedInput
+  deadLetterEntries?: Prisma.DeadLetterDispatchUpdateManyWithoutDispatchJobNestedInput
 }
 
 export type DispatchJobUncheckedUpdateInput = {
@@ -349,11 +400,15 @@ export type DispatchJobUncheckedUpdateInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   normalizationItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deadLetterEntries?: Prisma.DeadLetterDispatchUncheckedUpdateManyWithoutDispatchJobNestedInput
 }
 
 export type DispatchJobCreateManyInput = {
@@ -361,6 +416,9 @@ export type DispatchJobCreateManyInput = {
   endpointKey: string
   status: string
   attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
   lastError?: string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -373,6 +431,9 @@ export type DispatchJobUpdateManyMutationInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -384,6 +445,9 @@ export type DispatchJobUncheckedUpdateManyInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -406,6 +470,9 @@ export type DispatchJobCountOrderByAggregateInput = {
   endpointKey?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
+  endpointUrl?: Prisma.SortOrder
+  endpointMethod?: Prisma.SortOrder
+  tokenSnapshot?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
   receiptJson?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -422,6 +489,9 @@ export type DispatchJobMaxOrderByAggregateInput = {
   endpointKey?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
+  endpointUrl?: Prisma.SortOrder
+  endpointMethod?: Prisma.SortOrder
+  tokenSnapshot?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -433,6 +503,9 @@ export type DispatchJobMinOrderByAggregateInput = {
   endpointKey?: Prisma.SortOrder
   status?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
+  endpointUrl?: Prisma.SortOrder
+  endpointMethod?: Prisma.SortOrder
+  tokenSnapshot?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -441,6 +514,11 @@ export type DispatchJobMinOrderByAggregateInput = {
 
 export type DispatchJobSumOrderByAggregateInput = {
   attempt?: Prisma.SortOrder
+}
+
+export type DispatchJobScalarRelationFilter = {
+  is?: Prisma.DispatchJobWhereInput
+  isNot?: Prisma.DispatchJobWhereInput
 }
 
 export type DispatchJobCreateNestedManyWithoutNormalizationItemInput = {
@@ -485,15 +563,33 @@ export type DispatchJobUncheckedUpdateManyWithoutNormalizationItemNestedInput = 
   deleteMany?: Prisma.DispatchJobScalarWhereInput | Prisma.DispatchJobScalarWhereInput[]
 }
 
+export type DispatchJobCreateNestedOneWithoutDeadLetterEntriesInput = {
+  create?: Prisma.XOR<Prisma.DispatchJobCreateWithoutDeadLetterEntriesInput, Prisma.DispatchJobUncheckedCreateWithoutDeadLetterEntriesInput>
+  connectOrCreate?: Prisma.DispatchJobCreateOrConnectWithoutDeadLetterEntriesInput
+  connect?: Prisma.DispatchJobWhereUniqueInput
+}
+
+export type DispatchJobUpdateOneRequiredWithoutDeadLetterEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.DispatchJobCreateWithoutDeadLetterEntriesInput, Prisma.DispatchJobUncheckedCreateWithoutDeadLetterEntriesInput>
+  connectOrCreate?: Prisma.DispatchJobCreateOrConnectWithoutDeadLetterEntriesInput
+  upsert?: Prisma.DispatchJobUpsertWithoutDeadLetterEntriesInput
+  connect?: Prisma.DispatchJobWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DispatchJobUpdateToOneWithWhereWithoutDeadLetterEntriesInput, Prisma.DispatchJobUpdateWithoutDeadLetterEntriesInput>, Prisma.DispatchJobUncheckedUpdateWithoutDeadLetterEntriesInput>
+}
+
 export type DispatchJobCreateWithoutNormalizationItemInput = {
   id?: string
   endpointKey: string
   status: string
   attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
   lastError?: string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadLetterEntries?: Prisma.DeadLetterDispatchCreateNestedManyWithoutDispatchJobInput
 }
 
 export type DispatchJobUncheckedCreateWithoutNormalizationItemInput = {
@@ -501,10 +597,14 @@ export type DispatchJobUncheckedCreateWithoutNormalizationItemInput = {
   endpointKey: string
   status: string
   attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
   lastError?: string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deadLetterEntries?: Prisma.DeadLetterDispatchUncheckedCreateNestedManyWithoutDispatchJobInput
 }
 
 export type DispatchJobCreateOrConnectWithoutNormalizationItemInput = {
@@ -541,6 +641,9 @@ export type DispatchJobScalarWhereInput = {
   endpointKey?: Prisma.StringFilter<"DispatchJob"> | string
   status?: Prisma.StringFilter<"DispatchJob"> | string
   attempt?: Prisma.IntFilter<"DispatchJob"> | number
+  endpointUrl?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
+  endpointMethod?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
+  tokenSnapshot?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   lastError?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
   receiptJson?: Prisma.JsonNullableFilter<"DispatchJob">
   createdAt?: Prisma.DateTimeFilter<"DispatchJob"> | Date | string
@@ -548,11 +651,90 @@ export type DispatchJobScalarWhereInput = {
   normalizationItemId?: Prisma.StringNullableFilter<"DispatchJob"> | string | null
 }
 
+export type DispatchJobCreateWithoutDeadLetterEntriesInput = {
+  id?: string
+  endpointKey: string
+  status: string
+  attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
+  lastError?: string | null
+  receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  normalizationItem?: Prisma.NormalizationItemCreateNestedOneWithoutDispatchJobsInput
+}
+
+export type DispatchJobUncheckedCreateWithoutDeadLetterEntriesInput = {
+  id?: string
+  endpointKey: string
+  status: string
+  attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
+  lastError?: string | null
+  receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  normalizationItemId?: string | null
+}
+
+export type DispatchJobCreateOrConnectWithoutDeadLetterEntriesInput = {
+  where: Prisma.DispatchJobWhereUniqueInput
+  create: Prisma.XOR<Prisma.DispatchJobCreateWithoutDeadLetterEntriesInput, Prisma.DispatchJobUncheckedCreateWithoutDeadLetterEntriesInput>
+}
+
+export type DispatchJobUpsertWithoutDeadLetterEntriesInput = {
+  update: Prisma.XOR<Prisma.DispatchJobUpdateWithoutDeadLetterEntriesInput, Prisma.DispatchJobUncheckedUpdateWithoutDeadLetterEntriesInput>
+  create: Prisma.XOR<Prisma.DispatchJobCreateWithoutDeadLetterEntriesInput, Prisma.DispatchJobUncheckedCreateWithoutDeadLetterEntriesInput>
+  where?: Prisma.DispatchJobWhereInput
+}
+
+export type DispatchJobUpdateToOneWithWhereWithoutDeadLetterEntriesInput = {
+  where?: Prisma.DispatchJobWhereInput
+  data: Prisma.XOR<Prisma.DispatchJobUpdateWithoutDeadLetterEntriesInput, Prisma.DispatchJobUncheckedUpdateWithoutDeadLetterEntriesInput>
+}
+
+export type DispatchJobUpdateWithoutDeadLetterEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  normalizationItem?: Prisma.NormalizationItemUpdateOneWithoutDispatchJobsNestedInput
+}
+
+export type DispatchJobUncheckedUpdateWithoutDeadLetterEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  normalizationItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 export type DispatchJobCreateManyNormalizationItemInput = {
   id?: string
   endpointKey: string
   status: string
   attempt?: number
+  endpointUrl?: string | null
+  endpointMethod?: string | null
+  tokenSnapshot?: string | null
   lastError?: string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -564,10 +746,14 @@ export type DispatchJobUpdateWithoutNormalizationItemInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadLetterEntries?: Prisma.DeadLetterDispatchUpdateManyWithoutDispatchJobNestedInput
 }
 
 export type DispatchJobUncheckedUpdateWithoutNormalizationItemInput = {
@@ -575,10 +761,14 @@ export type DispatchJobUncheckedUpdateWithoutNormalizationItemInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deadLetterEntries?: Prisma.DeadLetterDispatchUncheckedUpdateManyWithoutDispatchJobNestedInput
 }
 
 export type DispatchJobUncheckedUpdateManyWithoutNormalizationItemInput = {
@@ -586,6 +776,9 @@ export type DispatchJobUncheckedUpdateManyWithoutNormalizationItemInput = {
   endpointKey?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  endpointUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endpointMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receiptJson?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -593,18 +786,52 @@ export type DispatchJobUncheckedUpdateManyWithoutNormalizationItemInput = {
 }
 
 
+/**
+ * Count Type DispatchJobCountOutputType
+ */
+
+export type DispatchJobCountOutputType = {
+  deadLetterEntries: number
+}
+
+export type DispatchJobCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  deadLetterEntries?: boolean | DispatchJobCountOutputTypeCountDeadLetterEntriesArgs
+}
+
+/**
+ * DispatchJobCountOutputType without action
+ */
+export type DispatchJobCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DispatchJobCountOutputType
+   */
+  select?: Prisma.DispatchJobCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * DispatchJobCountOutputType without action
+ */
+export type DispatchJobCountOutputTypeCountDeadLetterEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeadLetterDispatchWhereInput
+}
+
 
 export type DispatchJobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   endpointKey?: boolean
   status?: boolean
   attempt?: boolean
+  endpointUrl?: boolean
+  endpointMethod?: boolean
+  tokenSnapshot?: boolean
   lastError?: boolean
   receiptJson?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   normalizationItemId?: boolean
   normalizationItem?: boolean | Prisma.DispatchJob$normalizationItemArgs<ExtArgs>
+  deadLetterEntries?: boolean | Prisma.DispatchJob$deadLetterEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.DispatchJobCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["dispatchJob"]>
 
 export type DispatchJobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -612,6 +839,9 @@ export type DispatchJobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   endpointKey?: boolean
   status?: boolean
   attempt?: boolean
+  endpointUrl?: boolean
+  endpointMethod?: boolean
+  tokenSnapshot?: boolean
   lastError?: boolean
   receiptJson?: boolean
   createdAt?: boolean
@@ -625,6 +855,9 @@ export type DispatchJobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   endpointKey?: boolean
   status?: boolean
   attempt?: boolean
+  endpointUrl?: boolean
+  endpointMethod?: boolean
+  tokenSnapshot?: boolean
   lastError?: boolean
   receiptJson?: boolean
   createdAt?: boolean
@@ -638,6 +871,9 @@ export type DispatchJobSelectScalar = {
   endpointKey?: boolean
   status?: boolean
   attempt?: boolean
+  endpointUrl?: boolean
+  endpointMethod?: boolean
+  tokenSnapshot?: boolean
   lastError?: boolean
   receiptJson?: boolean
   createdAt?: boolean
@@ -645,9 +881,11 @@ export type DispatchJobSelectScalar = {
   normalizationItemId?: boolean
 }
 
-export type DispatchJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "endpointKey" | "status" | "attempt" | "lastError" | "receiptJson" | "createdAt" | "updatedAt" | "normalizationItemId", ExtArgs["result"]["dispatchJob"]>
+export type DispatchJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "endpointKey" | "status" | "attempt" | "endpointUrl" | "endpointMethod" | "tokenSnapshot" | "lastError" | "receiptJson" | "createdAt" | "updatedAt" | "normalizationItemId", ExtArgs["result"]["dispatchJob"]>
 export type DispatchJobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   normalizationItem?: boolean | Prisma.DispatchJob$normalizationItemArgs<ExtArgs>
+  deadLetterEntries?: boolean | Prisma.DispatchJob$deadLetterEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.DispatchJobCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DispatchJobIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   normalizationItem?: boolean | Prisma.DispatchJob$normalizationItemArgs<ExtArgs>
@@ -660,12 +898,25 @@ export type $DispatchJobPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "DispatchJob"
   objects: {
     normalizationItem: Prisma.$NormalizationItemPayload<ExtArgs> | null
+    deadLetterEntries: Prisma.$DeadLetterDispatchPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     endpointKey: string
     status: string
     attempt: number
+    /**
+     * Snapshot of endpoint URL at enqueue time for rotation safety.
+     */
+    endpointUrl: string | null
+    /**
+     * Snapshot of HTTP method at enqueue time for rotation safety.
+     */
+    endpointMethod: string | null
+    /**
+     * Snapshot of auth token/secret at enqueue time for rotation safety.
+     */
+    tokenSnapshot: string | null
     lastError: string | null
     receiptJson: runtime.JsonValue | null
     createdAt: Date
@@ -1066,6 +1317,7 @@ readonly fields: DispatchJobFieldRefs;
 export interface Prisma__DispatchJobClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   normalizationItem<T extends Prisma.DispatchJob$normalizationItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DispatchJob$normalizationItemArgs<ExtArgs>>): Prisma.Prisma__NormalizationItemClient<runtime.Types.Result.GetResult<Prisma.$NormalizationItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  deadLetterEntries<T extends Prisma.DispatchJob$deadLetterEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DispatchJob$deadLetterEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeadLetterDispatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1099,6 +1351,9 @@ export interface DispatchJobFieldRefs {
   readonly endpointKey: Prisma.FieldRef<"DispatchJob", 'String'>
   readonly status: Prisma.FieldRef<"DispatchJob", 'String'>
   readonly attempt: Prisma.FieldRef<"DispatchJob", 'Int'>
+  readonly endpointUrl: Prisma.FieldRef<"DispatchJob", 'String'>
+  readonly endpointMethod: Prisma.FieldRef<"DispatchJob", 'String'>
+  readonly tokenSnapshot: Prisma.FieldRef<"DispatchJob", 'String'>
   readonly lastError: Prisma.FieldRef<"DispatchJob", 'String'>
   readonly receiptJson: Prisma.FieldRef<"DispatchJob", 'Json'>
   readonly createdAt: Prisma.FieldRef<"DispatchJob", 'DateTime'>
@@ -1516,6 +1771,30 @@ export type DispatchJob$normalizationItemArgs<ExtArgs extends runtime.Types.Exte
    */
   include?: Prisma.NormalizationItemInclude<ExtArgs> | null
   where?: Prisma.NormalizationItemWhereInput
+}
+
+/**
+ * DispatchJob.deadLetterEntries
+ */
+export type DispatchJob$deadLetterEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeadLetterDispatch
+   */
+  select?: Prisma.DeadLetterDispatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeadLetterDispatch
+   */
+  omit?: Prisma.DeadLetterDispatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeadLetterDispatchInclude<ExtArgs> | null
+  where?: Prisma.DeadLetterDispatchWhereInput
+  orderBy?: Prisma.DeadLetterDispatchOrderByWithRelationInput | Prisma.DeadLetterDispatchOrderByWithRelationInput[]
+  cursor?: Prisma.DeadLetterDispatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeadLetterDispatchScalarFieldEnum | Prisma.DeadLetterDispatchScalarFieldEnum[]
 }
 
 /**

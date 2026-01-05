@@ -16,10 +16,10 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "../models.ts"
-import { type PrismaClient } from "./class.ts"
+import type * as Prisma from "../models"
+import { type PrismaClient } from "./class"
 
-export type * from '../models.ts'
+export type * from '../models'
 
 export type DMMF = typeof runtime.DMMF
 
@@ -392,11 +392,14 @@ export const ModelName = {
   DispatchJob: 'DispatchJob',
   ExecutionRecord: 'ExecutionRecord',
   TelemetryEvent: 'TelemetryEvent',
+  TelemetryArchive: 'TelemetryArchive',
   AdvisorySignal: 'AdvisorySignal',
   StrategyProposal: 'StrategyProposal',
   ValueLedgerEntry: 'ValueLedgerEntry',
   GovernanceSetting: 'GovernanceSetting',
-  AuditTrailEntry: 'AuditTrailEntry'
+  AuditTrailEntry: 'AuditTrailEntry',
+  CycleCheckpoint: 'CycleCheckpoint',
+  DeadLetterDispatch: 'DeadLetterDispatch'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -412,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "cycleRun" | "initiation" | "transformation" | "normalizationBatch" | "normalizationItem" | "dispatchJob" | "executionRecord" | "telemetryEvent" | "advisorySignal" | "strategyProposal" | "valueLedgerEntry" | "governanceSetting" | "auditTrailEntry"
+    modelProps: "cycleRun" | "initiation" | "transformation" | "normalizationBatch" | "normalizationItem" | "dispatchJob" | "executionRecord" | "telemetryEvent" | "telemetryArchive" | "advisorySignal" | "strategyProposal" | "valueLedgerEntry" | "governanceSetting" | "auditTrailEntry" | "cycleCheckpoint" | "deadLetterDispatch"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1008,6 +1011,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TelemetryArchive: {
+      payload: Prisma.$TelemetryArchivePayload<ExtArgs>
+      fields: Prisma.TelemetryArchiveFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TelemetryArchiveFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TelemetryArchiveFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>
+        }
+        findFirst: {
+          args: Prisma.TelemetryArchiveFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TelemetryArchiveFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>
+        }
+        findMany: {
+          args: Prisma.TelemetryArchiveFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>[]
+        }
+        create: {
+          args: Prisma.TelemetryArchiveCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>
+        }
+        createMany: {
+          args: Prisma.TelemetryArchiveCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TelemetryArchiveCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>[]
+        }
+        delete: {
+          args: Prisma.TelemetryArchiveDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>
+        }
+        update: {
+          args: Prisma.TelemetryArchiveUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>
+        }
+        deleteMany: {
+          args: Prisma.TelemetryArchiveDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TelemetryArchiveUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TelemetryArchiveUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>[]
+        }
+        upsert: {
+          args: Prisma.TelemetryArchiveUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelemetryArchivePayload>
+        }
+        aggregate: {
+          args: Prisma.TelemetryArchiveAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTelemetryArchive>
+        }
+        groupBy: {
+          args: Prisma.TelemetryArchiveGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TelemetryArchiveGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TelemetryArchiveCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TelemetryArchiveCountAggregateOutputType> | number
+        }
+      }
+    }
     AdvisorySignal: {
       payload: Prisma.$AdvisorySignalPayload<ExtArgs>
       fields: Prisma.AdvisorySignalFieldRefs
@@ -1378,6 +1455,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CycleCheckpoint: {
+      payload: Prisma.$CycleCheckpointPayload<ExtArgs>
+      fields: Prisma.CycleCheckpointFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CycleCheckpointFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CycleCheckpointFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>
+        }
+        findFirst: {
+          args: Prisma.CycleCheckpointFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CycleCheckpointFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>
+        }
+        findMany: {
+          args: Prisma.CycleCheckpointFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>[]
+        }
+        create: {
+          args: Prisma.CycleCheckpointCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>
+        }
+        createMany: {
+          args: Prisma.CycleCheckpointCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CycleCheckpointCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>[]
+        }
+        delete: {
+          args: Prisma.CycleCheckpointDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>
+        }
+        update: {
+          args: Prisma.CycleCheckpointUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>
+        }
+        deleteMany: {
+          args: Prisma.CycleCheckpointDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CycleCheckpointUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CycleCheckpointUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>[]
+        }
+        upsert: {
+          args: Prisma.CycleCheckpointUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CycleCheckpointPayload>
+        }
+        aggregate: {
+          args: Prisma.CycleCheckpointAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCycleCheckpoint>
+        }
+        groupBy: {
+          args: Prisma.CycleCheckpointGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CycleCheckpointGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CycleCheckpointCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CycleCheckpointCountAggregateOutputType> | number
+        }
+      }
+    }
+    DeadLetterDispatch: {
+      payload: Prisma.$DeadLetterDispatchPayload<ExtArgs>
+      fields: Prisma.DeadLetterDispatchFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DeadLetterDispatchFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DeadLetterDispatchFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>
+        }
+        findFirst: {
+          args: Prisma.DeadLetterDispatchFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DeadLetterDispatchFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>
+        }
+        findMany: {
+          args: Prisma.DeadLetterDispatchFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>[]
+        }
+        create: {
+          args: Prisma.DeadLetterDispatchCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>
+        }
+        createMany: {
+          args: Prisma.DeadLetterDispatchCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DeadLetterDispatchCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>[]
+        }
+        delete: {
+          args: Prisma.DeadLetterDispatchDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>
+        }
+        update: {
+          args: Prisma.DeadLetterDispatchUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>
+        }
+        deleteMany: {
+          args: Prisma.DeadLetterDispatchDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DeadLetterDispatchUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DeadLetterDispatchUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>[]
+        }
+        upsert: {
+          args: Prisma.DeadLetterDispatchUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeadLetterDispatchPayload>
+        }
+        aggregate: {
+          args: Prisma.DeadLetterDispatchAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDeadLetterDispatch>
+        }
+        groupBy: {
+          args: Prisma.DeadLetterDispatchGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeadLetterDispatchGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DeadLetterDispatchCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeadLetterDispatchCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1433,8 +1658,9 @@ export const InitiationScalarFieldEnum = {
   label: 'label',
   weight: 'weight',
   metadata: 'metadata',
-  dedupeHash: 'dedupeHash',
+  initiationHash: 'initiationHash',
   createdAt: 'createdAt',
+  runProfileId: 'runProfileId',
   cycleRunId: 'cycleRunId'
 } as const
 
@@ -1481,6 +1707,9 @@ export const DispatchJobScalarFieldEnum = {
   endpointKey: 'endpointKey',
   status: 'status',
   attempt: 'attempt',
+  endpointUrl: 'endpointUrl',
+  endpointMethod: 'endpointMethod',
+  tokenSnapshot: 'tokenSnapshot',
   lastError: 'lastError',
   receiptJson: 'receiptJson',
   createdAt: 'createdAt',
@@ -1508,6 +1737,7 @@ export type ExecutionRecordScalarFieldEnum = (typeof ExecutionRecordScalarFieldE
 export const TelemetryEventScalarFieldEnum = {
   id: 'id',
   eventType: 'eventType',
+  cycleRunId: 'cycleRunId',
   profileId: 'profileId',
   runId: 'runId',
   namespace: 'namespace',
@@ -1518,9 +1748,25 @@ export const TelemetryEventScalarFieldEnum = {
 export type TelemetryEventScalarFieldEnum = (typeof TelemetryEventScalarFieldEnum)[keyof typeof TelemetryEventScalarFieldEnum]
 
 
+export const TelemetryArchiveScalarFieldEnum = {
+  id: 'id',
+  eventType: 'eventType',
+  cycleRunId: 'cycleRunId',
+  profileId: 'profileId',
+  runId: 'runId',
+  namespace: 'namespace',
+  timestamp: 'timestamp',
+  metadata: 'metadata',
+  archivedAt: 'archivedAt'
+} as const
+
+export type TelemetryArchiveScalarFieldEnum = (typeof TelemetryArchiveScalarFieldEnum)[keyof typeof TelemetryArchiveScalarFieldEnum]
+
+
 export const AdvisorySignalScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  cycleRunId: 'cycleRunId',
   signal: 'signal',
   confidence: 'confidence',
   recommendation: 'recommendation',
@@ -1533,6 +1779,7 @@ export type AdvisorySignalScalarFieldEnum = (typeof AdvisorySignalScalarFieldEnu
 export const StrategyProposalScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  cycleRunId: 'cycleRunId',
   signalId: 'signalId',
   description: 'description',
   suggestedChange: 'suggestedChange',
@@ -1546,6 +1793,7 @@ export type StrategyProposalScalarFieldEnum = (typeof StrategyProposalScalarFiel
 export const ValueLedgerEntryScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  cycleRunId: 'cycleRunId',
   runId: 'runId',
   valueTags: 'valueTags',
   weight: 'weight',
@@ -1569,6 +1817,7 @@ export type GovernanceSettingScalarFieldEnum = (typeof GovernanceSettingScalarFi
 
 export const AuditTrailEntryScalarFieldEnum = {
   id: 'id',
+  cycleRunId: 'cycleRunId',
   namespace: 'namespace',
   actor: 'actor',
   action: 'action',
@@ -1577,6 +1826,32 @@ export const AuditTrailEntryScalarFieldEnum = {
 } as const
 
 export type AuditTrailEntryScalarFieldEnum = (typeof AuditTrailEntryScalarFieldEnum)[keyof typeof AuditTrailEntryScalarFieldEnum]
+
+
+export const CycleCheckpointScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  stage: 'stage',
+  details: 'details',
+  cycleRunId: 'cycleRunId'
+} as const
+
+export type CycleCheckpointScalarFieldEnum = (typeof CycleCheckpointScalarFieldEnum)[keyof typeof CycleCheckpointScalarFieldEnum]
+
+
+export const DeadLetterDispatchScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  requeuedAt: 'requeuedAt',
+  dispatchJobId: 'dispatchJobId',
+  normalizationItemId: 'normalizationItemId',
+  endpointKey: 'endpointKey',
+  lastStatus: 'lastStatus',
+  lastError: 'lastError',
+  payloadMeta: 'payloadMeta'
+} as const
+
+export type DeadLetterDispatchScalarFieldEnum = (typeof DeadLetterDispatchScalarFieldEnum)[keyof typeof DeadLetterDispatchScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1805,11 +2080,14 @@ export type GlobalOmitConfig = {
   dispatchJob?: Prisma.DispatchJobOmit
   executionRecord?: Prisma.ExecutionRecordOmit
   telemetryEvent?: Prisma.TelemetryEventOmit
+  telemetryArchive?: Prisma.TelemetryArchiveOmit
   advisorySignal?: Prisma.AdvisorySignalOmit
   strategyProposal?: Prisma.StrategyProposalOmit
   valueLedgerEntry?: Prisma.ValueLedgerEntryOmit
   governanceSetting?: Prisma.GovernanceSettingOmit
   auditTrailEntry?: Prisma.AuditTrailEntryOmit
+  cycleCheckpoint?: Prisma.CycleCheckpointOmit
+  deadLetterDispatch?: Prisma.DeadLetterDispatchOmit
 }
 
 /* Types for Logging */

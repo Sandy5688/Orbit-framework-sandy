@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model TelemetryEvent
@@ -27,6 +27,7 @@ export type AggregateTelemetryEvent = {
 export type TelemetryEventMinAggregateOutputType = {
   id: string | null
   eventType: string | null
+  cycleRunId: string | null
   profileId: string | null
   runId: string | null
   namespace: string | null
@@ -36,6 +37,7 @@ export type TelemetryEventMinAggregateOutputType = {
 export type TelemetryEventMaxAggregateOutputType = {
   id: string | null
   eventType: string | null
+  cycleRunId: string | null
   profileId: string | null
   runId: string | null
   namespace: string | null
@@ -45,6 +47,7 @@ export type TelemetryEventMaxAggregateOutputType = {
 export type TelemetryEventCountAggregateOutputType = {
   id: number
   eventType: number
+  cycleRunId: number
   profileId: number
   runId: number
   namespace: number
@@ -57,6 +60,7 @@ export type TelemetryEventCountAggregateOutputType = {
 export type TelemetryEventMinAggregateInputType = {
   id?: true
   eventType?: true
+  cycleRunId?: true
   profileId?: true
   runId?: true
   namespace?: true
@@ -66,6 +70,7 @@ export type TelemetryEventMinAggregateInputType = {
 export type TelemetryEventMaxAggregateInputType = {
   id?: true
   eventType?: true
+  cycleRunId?: true
   profileId?: true
   runId?: true
   namespace?: true
@@ -75,6 +80,7 @@ export type TelemetryEventMaxAggregateInputType = {
 export type TelemetryEventCountAggregateInputType = {
   id?: true
   eventType?: true
+  cycleRunId?: true
   profileId?: true
   runId?: true
   namespace?: true
@@ -158,6 +164,7 @@ export type TelemetryEventGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type TelemetryEventGroupByOutputType = {
   id: string
   eventType: string
+  cycleRunId: string | null
   profileId: string | null
   runId: string | null
   namespace: string | null
@@ -189,6 +196,7 @@ export type TelemetryEventWhereInput = {
   NOT?: Prisma.TelemetryEventWhereInput | Prisma.TelemetryEventWhereInput[]
   id?: Prisma.StringFilter<"TelemetryEvent"> | string
   eventType?: Prisma.StringFilter<"TelemetryEvent"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
   profileId?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
   runId?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
   namespace?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
@@ -199,6 +207,7 @@ export type TelemetryEventWhereInput = {
 export type TelemetryEventOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   profileId?: Prisma.SortOrderInput | Prisma.SortOrder
   runId?: Prisma.SortOrderInput | Prisma.SortOrder
   namespace?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -212,6 +221,7 @@ export type TelemetryEventWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TelemetryEventWhereInput[]
   NOT?: Prisma.TelemetryEventWhereInput | Prisma.TelemetryEventWhereInput[]
   eventType?: Prisma.StringFilter<"TelemetryEvent"> | string
+  cycleRunId?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
   profileId?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
   runId?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
   namespace?: Prisma.StringNullableFilter<"TelemetryEvent"> | string | null
@@ -222,6 +232,7 @@ export type TelemetryEventWhereUniqueInput = Prisma.AtLeast<{
 export type TelemetryEventOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrderInput | Prisma.SortOrder
   profileId?: Prisma.SortOrderInput | Prisma.SortOrder
   runId?: Prisma.SortOrderInput | Prisma.SortOrder
   namespace?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -238,6 +249,7 @@ export type TelemetryEventScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TelemetryEventScalarWhereWithAggregatesInput | Prisma.TelemetryEventScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TelemetryEvent"> | string
   eventType?: Prisma.StringWithAggregatesFilter<"TelemetryEvent"> | string
+  cycleRunId?: Prisma.StringNullableWithAggregatesFilter<"TelemetryEvent"> | string | null
   profileId?: Prisma.StringNullableWithAggregatesFilter<"TelemetryEvent"> | string | null
   runId?: Prisma.StringNullableWithAggregatesFilter<"TelemetryEvent"> | string | null
   namespace?: Prisma.StringNullableWithAggregatesFilter<"TelemetryEvent"> | string | null
@@ -248,6 +260,7 @@ export type TelemetryEventScalarWhereWithAggregatesInput = {
 export type TelemetryEventCreateInput = {
   id?: string
   eventType: string
+  cycleRunId?: string | null
   profileId?: string | null
   runId?: string | null
   namespace?: string | null
@@ -258,6 +271,7 @@ export type TelemetryEventCreateInput = {
 export type TelemetryEventUncheckedCreateInput = {
   id?: string
   eventType: string
+  cycleRunId?: string | null
   profileId?: string | null
   runId?: string | null
   namespace?: string | null
@@ -268,6 +282,7 @@ export type TelemetryEventUncheckedCreateInput = {
 export type TelemetryEventUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -278,6 +293,7 @@ export type TelemetryEventUpdateInput = {
 export type TelemetryEventUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -288,6 +304,7 @@ export type TelemetryEventUncheckedUpdateInput = {
 export type TelemetryEventCreateManyInput = {
   id?: string
   eventType: string
+  cycleRunId?: string | null
   profileId?: string | null
   runId?: string | null
   namespace?: string | null
@@ -298,6 +315,7 @@ export type TelemetryEventCreateManyInput = {
 export type TelemetryEventUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -308,6 +326,7 @@ export type TelemetryEventUpdateManyMutationInput = {
 export type TelemetryEventUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  cycleRunId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   runId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   namespace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -318,6 +337,7 @@ export type TelemetryEventUncheckedUpdateManyInput = {
 export type TelemetryEventCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   namespace?: Prisma.SortOrder
@@ -328,6 +348,7 @@ export type TelemetryEventCountOrderByAggregateInput = {
 export type TelemetryEventMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   namespace?: Prisma.SortOrder
@@ -337,6 +358,7 @@ export type TelemetryEventMaxOrderByAggregateInput = {
 export type TelemetryEventMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
+  cycleRunId?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   namespace?: Prisma.SortOrder
@@ -348,6 +370,7 @@ export type TelemetryEventMinOrderByAggregateInput = {
 export type TelemetryEventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   eventType?: boolean
+  cycleRunId?: boolean
   profileId?: boolean
   runId?: boolean
   namespace?: boolean
@@ -358,6 +381,7 @@ export type TelemetryEventSelect<ExtArgs extends runtime.Types.Extensions.Intern
 export type TelemetryEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   eventType?: boolean
+  cycleRunId?: boolean
   profileId?: boolean
   runId?: boolean
   namespace?: boolean
@@ -368,6 +392,7 @@ export type TelemetryEventSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 export type TelemetryEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   eventType?: boolean
+  cycleRunId?: boolean
   profileId?: boolean
   runId?: boolean
   namespace?: boolean
@@ -378,6 +403,7 @@ export type TelemetryEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 export type TelemetryEventSelectScalar = {
   id?: boolean
   eventType?: boolean
+  cycleRunId?: boolean
   profileId?: boolean
   runId?: boolean
   namespace?: boolean
@@ -385,7 +411,7 @@ export type TelemetryEventSelectScalar = {
   metadata?: boolean
 }
 
-export type TelemetryEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventType" | "profileId" | "runId" | "namespace" | "timestamp" | "metadata", ExtArgs["result"]["telemetryEvent"]>
+export type TelemetryEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventType" | "cycleRunId" | "profileId" | "runId" | "namespace" | "timestamp" | "metadata", ExtArgs["result"]["telemetryEvent"]>
 
 export type $TelemetryEventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TelemetryEvent"
@@ -393,6 +419,7 @@ export type $TelemetryEventPayload<ExtArgs extends runtime.Types.Extensions.Inte
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     eventType: string
+    cycleRunId: string | null
     profileId: string | null
     runId: string | null
     namespace: string | null
@@ -823,6 +850,7 @@ export interface Prisma__TelemetryEventClient<T, Null = never, ExtArgs extends r
 export interface TelemetryEventFieldRefs {
   readonly id: Prisma.FieldRef<"TelemetryEvent", 'String'>
   readonly eventType: Prisma.FieldRef<"TelemetryEvent", 'String'>
+  readonly cycleRunId: Prisma.FieldRef<"TelemetryEvent", 'String'>
   readonly profileId: Prisma.FieldRef<"TelemetryEvent", 'String'>
   readonly runId: Prisma.FieldRef<"TelemetryEvent", 'String'>
   readonly namespace: Prisma.FieldRef<"TelemetryEvent", 'String'>
